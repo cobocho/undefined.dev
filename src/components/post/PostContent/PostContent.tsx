@@ -71,12 +71,24 @@ export const PostContent = ({ post }: PostContentProps) => {
       em: (props) => (
         <em {...props} className="font-medium italic opacity-30" />
       ),
+      table: (props) => (
+        <div className="overflow-hidden rounded-lg border border-border">
+          <table {...props} className="w-full" />
+        </div>
+      ),
+      thead: (props) => <thead {...props} className="bg-outline text-white" />,
+      th: (props) => (
+        <th {...props} className="border border-gray-800 px-4 py-2" />
+      ),
+      td: (props) => (
+        <td {...props} className="border border-border px-4 py-2" />
+      ),
       code: (props) => {
         const match = /language-(\w+)/.exec(props.className!)
 
         if (!match) {
           return (
-            <span className="mx-[1px] inline-block rounded-md bg-gray-100 px-2">
+            <span className="mx-[1px] inline-block rounded-lg bg-gray-100 px-2">
               {props.children}
             </span>
           )

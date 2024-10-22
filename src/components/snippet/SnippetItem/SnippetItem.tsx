@@ -6,12 +6,15 @@ import Link from 'next/link'
 
 import { generatePostLayoutId } from '@/utils/motion'
 import { Snippet } from '@/interfaces/snippet'
+import { formatter } from '@/utils/date'
 
 interface SnippetItemProps {
   snippet: Snippet
 }
 
 export const SnippetItem = ({ snippet }: SnippetItemProps) => {
+  const { month, day, year } = formatter(snippet.date)
+
   return (
     <Link
       className="group flex w-full cursor-pointer items-center gap-4 py-2 mobile:h-fit mobile:flex-col"
@@ -26,7 +29,7 @@ export const SnippetItem = ({ snippet }: SnippetItemProps) => {
           >
             {snippet.title}
           </motion.h2>
-          <p className="text-text/60 text-sm">{snippet.date}</p>
+          <p className="text-text/60 text-sm">{`${month} ${day}, ${year}`}</p>
         </div>
       </div>
     </Link>

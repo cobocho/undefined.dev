@@ -12,15 +12,18 @@ import { Snippet } from '@/interfaces/snippet'
 
 interface PostHeaderProps {
   post: Post | Snippet
+  isSnippet?: boolean
 }
 
-export const PostHeader = ({ post }: PostHeaderProps) => {
+export const PostHeader = ({ post, isSnippet = false }: PostHeaderProps) => {
   const { year, month, day } = formatter(post.date)
 
   return (
     <AppearBottom className="flex w-full flex-col items-center gap-4 border-b-[1px] border-gray-300 pb-10">
       <div className="flex items-center gap-4">
-        <Link href={`/category/${post.category}/1`}>
+        <Link
+          href={`${isSnippet ? '/snippet' : ''}/category/${post.category}/1`}
+        >
           <motion.p
             layoutId={generatePostLayoutId('category', post)}
             className="text-lg font-bold italic text-outline/50 transition-colors hover:text-outline"

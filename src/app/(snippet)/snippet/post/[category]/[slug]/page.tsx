@@ -46,7 +46,7 @@ const SnippetPage = ({ params: { category, slug } }: SnippetPageProps) => {
 
   return (
     <div className="flex flex-col gap-20">
-      <PostHeader post={snippet} />
+      <PostHeader post={snippet} isSnippet />
       <div>
         <PostContent post={snippet} />
         <Giscus />

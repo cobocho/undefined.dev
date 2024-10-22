@@ -15,6 +15,14 @@ import { getCategories } from './category'
 
 export const getSnippetImages = (folder: string, slug: string) => {
   try {
+    const hasImages = fs.existsSync(
+      join(SNIPPET_DIRECTORY, folder, slug, 'images'),
+    )
+
+    if (!hasImages) {
+      return {}
+    }
+
     const imagesFileNames = fs.readdirSync(
       join(SNIPPET_DIRECTORY, folder, slug, 'images'),
     )
