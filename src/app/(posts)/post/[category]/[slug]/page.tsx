@@ -52,7 +52,7 @@ const PostPage = ({ params: { category, slug } }: PostPageProps) => {
       <div>
         <PostContent post={post} />
         <Giscus />
-        <div className="fixed right-[calc((100dvw_-_900px)_/_2)] top-[10rem] hidden translate-x-[calc(100%_+_20px)] desktop:block">
+        <div className="fixed right-[calc((100dvw_-_800px)_/_2)] top-[10rem] hidden translate-x-[calc(100%_+_20px)] desktop:block">
           <PostTOC />
         </div>
       </div>

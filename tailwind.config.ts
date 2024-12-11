@@ -16,19 +16,19 @@ const config: Config = {
         content: '#1c1c1c',
       },
       width: {
-        'content-limit': '900px',
+        'content-limit': '800px',
         toc: '260px',
       },
       screens: {
         desktop: {
-          min: '1500px',
+          min: '1280px',
         },
         tablet: {
-          max: '1499px',
-          min: '1000px',
+          max: '1279px',
+          min: '800px',
         },
         mobile: {
-          max: '999px',
+          max: '799px',
         },
       },
       boxShadow: {

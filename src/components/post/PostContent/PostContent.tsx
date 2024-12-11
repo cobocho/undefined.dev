@@ -25,7 +25,7 @@ export const PostContent = ({ post }: PostContentProps) => {
   const customComponents: Partial<Components> = useMemo(
     () => ({
       p: (props) => (
-        <span {...props} className="mb-8 block leading-[190%] text-content" />
+        <span {...props} className="my-4 block leading-[190%] text-content" />
       ),
       h1: (props) => (
         <h1
@@ -83,12 +83,15 @@ export const PostContent = ({ post }: PostContentProps) => {
       td: (props) => (
         <td {...props} className="border border-border px-4 py-2" />
       ),
+      blockquote: (props) => (
+        <blockquote {...props} className="border-accent border-l-4 py-1 pl-4" />
+      ),
       code: (props) => {
         const match = /language-(\w+)/.exec(props.className!)
 
         if (!match) {
           return (
-            <span className="mx-[1px] inline-block rounded-lg bg-gray-100 px-2">
+            <span className="mx-[1px] inline-block rounded-md bg-gray-200 px-2 text-sm">
               {props.children}
             </span>
           )
