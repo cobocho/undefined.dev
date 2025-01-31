@@ -1,6 +1,6 @@
 ---
 title: '디자인 오픈소스로 디자인 시스템 따라 만들어보기 -프로젝트 세팅-'
-description: '국제화, 현지화에 대한 개인적인 고민'
+description: '라이브러리와 번들러 세팅하기'
 date: '2025/01/22'
 tags: ['디자인 시스템', '원티드', 'Rollup', 'vanilla-extract']
 ---
@@ -234,7 +234,58 @@ export default {
 이제 스타일링을 위한 `vanilla-extract`를 설치한다.
 
 ```bash
-pnpm install --save-dev @vanilla-extract/css @vanilla-extract/recipes @vanilla-extract/sprinkles
+pnpm install --save-dev @vanilla-extract/css @vanilla-extract/recipes @vanilla-extract/sprinkles @vanilla-extract/rollup-plugin
+```
+
+이후 `vanilla-extract`에 대한 번들러 플러그인을 추가한다.
+
+```js
+export default {
+  input: 'src/index.ts', // 진입점
+  output: [
+    {
+      file: 'dist/index.cjs.js',
+      format: 'cjs', // CommonJS 출력
+      exports: 'auto',
+      assetFileNames: mergeStyles,
+    },
+    {
+      file: 'dist/index.esm.js',
+      format: 'esm', // ES Module 출력
+      assetFileNames: mergeStyles,
+    },
+  ],
+  plugins: [
+    alias({
+      entries: [{ find: '@', replacement: path.join(__dirname, './src') }],
+    }),
+    peerDepsExternal(),
+    resolve(), // node_modules 확인
+    commonjs(), // CommonJS 변환
+    typescript({
+      tsconfig: './tsconfig.json',
+      declaration: true,
+      declarationDir: 'dist',
+      rootDir: 'src',
+      exclude: [
+        'node_modules',
+        '**/*.stories.css.ts',
+        '**/*.stories.tsx',
+        '**/*.spec.ts',
+        '**/*.spec.tsx',
+      ],
+    }), // 타입스크립트 변환
+    vanillaExtractPlugin(), // vanilla-extract 플러그인
+    terser(), // 코드 압축
+    babel({
+      exclude: 'node_modules/**',
+      babelHelpers: 'bundled',
+      presets: ['@babel/preset-env', '@babel/preset-react'],
+    }),
+    filesize(), // 번들 파일 크기 출력
+    addUseClient(), // "use client" 추가
+  ],
+}
 ```
 
 # Reference
