@@ -21,8 +21,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /home/kimmingyu/workspace/undefined.dev
-            git pull origin main
-            npm i
+            docker stop undefined-dev || true
+            docker rm undefined-dev || true
+
+            docker rmi undefined-dev || true
+
             npm run docker:build
-            npm run docker:run
+
+            docker run -d --name undefined-dev -p 3000:3000 undefined-dev
+
+            docker image prune -f
