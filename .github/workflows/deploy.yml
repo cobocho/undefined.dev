@@ -22,6 +22,9 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           timeout: '5m'
           script: |
+            cd /home/kimmingyu/workspace/undefined.dev
+            git pull origin main
+
             docker stop undefined-dev || true
             docker rm undefined-dev || true
 
