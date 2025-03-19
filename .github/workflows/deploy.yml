@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          timeout: 300
+          timeout: '5m'
           script: |
             docker stop undefined-dev || true
             docker rm undefined-dev || true
