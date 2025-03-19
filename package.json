@@ -1,5 +1,5 @@
 {
-  "name": "cobocho.dev",
+  "name": "undefined.dev",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "docker:build": "docker build -t undefined-dev .",
+    "docker:run": "docker run -p 3000:3000 undefined-dev"
   },
   "dependencies": {
     "@next/third-parties": "^14.2.15",
