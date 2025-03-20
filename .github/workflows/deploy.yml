@@ -41,15 +41,15 @@ jobs:
 
       - name: Send Discord Notification
         uses: Ilshidur/action-discord@master
+        if: success()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
           args: |
             🚀 **배포 완료!** 
             - 브랜치: `main`
-            - 📅 배포 완료 시간: $(date +'%Y-%m-%d %H:%M:%S')
             - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
-            - 🌍 서비스 도메인: [🔗 Open](https://undefined.dev)
+            - [🔗 Open](https://un-defined.dev)
 
       - name: Send Discord Notification (Failed)
         uses: Ilshidur/action-discord@master
@@ -61,6 +61,5 @@ jobs:
             ❌ **배포 실패!** 
             - 브랜치: `main`
             - 상태: ❌ 실패
-            - 📅 배포 실패 시간: $(date +'%Y-%m-%d %H:%M:%S')
             - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
-            - 🌍 서비스 도메인: [🔗 Open](https://undefined.dev)
+            - [🔗 Open](https://un-defined.dev)
