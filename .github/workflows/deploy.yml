@@ -26,8 +26,7 @@ jobs:
               cd /home/kimmingyu/workspace/undefined.dev
               git pull origin main
 
-              docker build -t undefined-dev .
-              docker run -d --name undefined-dev -p 3000:3000
+              docker-compose up -d --build --remove-orphans
               
               docker container prune -f
               docker image prune -f
