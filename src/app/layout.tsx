@@ -30,8 +30,8 @@ export const generateMetadata = (): Metadata => {
 
   return {
     title: {
-      template: '%s | un-defined.dev',
-      default: HOST,
+      template: '%s | undefined.dev',
+      default: 'undefined.dev',
     },
     openGraph: {
       title: HOST,
