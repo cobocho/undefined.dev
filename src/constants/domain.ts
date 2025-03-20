@@ -1,5 +1,5 @@
 export const DOMAIN =
-  process.env.NODE_ENV === 'production' ? 'undefined.dev' : 'localhost:3000'
+  process.env.NODE_ENV === 'production' ? 'un-defined.dev' : 'localhost:3000'
 
 export const HOST =
   process.env.NODE_ENV === 'production'

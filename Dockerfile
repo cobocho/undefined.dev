@@ -25,6 +25,9 @@ COPY --from=builder /app/package.json ./
 COPY --from=builder /app/.next/standalone .
 COPY --from=builder /app/.next/static ./.next/static
 
+# Public 폴더 복사
+COPY --from=builder /app/public ./public
+
 # 포트 설정
 EXPOSE 3000
 
