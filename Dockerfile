@@ -2,6 +2,9 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# 환경변수 설정
+ENV NODE_ENV=production
+
 # package.json 및 package-lock.json 복사
 COPY package.json package-lock.json ./
 
