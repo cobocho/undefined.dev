@@ -5,6 +5,7 @@ import { getAllPosts, getPosts } from '@/apis/posts'
 import { CategoryList } from '@/components/post/CategoryList'
 import { PostList } from '@/components/post/PostList'
 import { Pagination } from '@/components/ui/Pagination'
+import { HOST } from '@/constants/domain'
 
 interface AllPostsProps {
   params: {
@@ -15,7 +16,7 @@ interface AllPostsProps {
 export const generateMetadata = (): Metadata => {
   const title = 'Posts'
   const description = 'All posts'
-  const images = ['/images/default-thumbnail.png']
+  const images = [HOST + '/images/default-thumbnail.png']
 
   return {
     title,

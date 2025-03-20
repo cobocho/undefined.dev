@@ -6,6 +6,7 @@ import { getPosts } from '@/apis/posts'
 import { PostList } from '@/components/post/PostList'
 import { Pagination } from '@/components/ui/Pagination'
 import { getAllTags } from '@/apis/tag'
+import { HOST } from '@/constants/domain'
 
 interface TagPageProps {
   params: {
@@ -17,7 +18,7 @@ interface TagPageProps {
 export const generateMetadata = ({ params }: TagPageProps): Metadata => {
   const title = params.tag
   const description = `${params.tag} Posts`
-  const images = ['/images/default-thumbnail.png']
+  const images = [HOST + '/images/default-thumbnail.png']
 
   return {
     title,

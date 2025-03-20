@@ -3,11 +3,12 @@ import { Metadata } from 'next'
 import { getCategories } from '@/apis/category'
 import { SnippetCategoryList } from '@/components/snippet/SnippetCategoryList'
 import { Title } from '@/components/ui/Title'
+import { HOST } from '@/constants/domain'
 
 export const generateMetadata = (): Metadata => {
   const title = 'Snippets'
   const description = 'All Snippets'
-  const images = ['/images/default-thumbnail.png']
+  const images = [HOST + '/images/default-thumbnail.png']
 
   return {
     title,

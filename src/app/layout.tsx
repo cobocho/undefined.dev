@@ -8,17 +8,15 @@ import { OutLineMenu } from '@/components/layout/OutLineMenu'
 
 import './globals.css'
 import './carousel.css'
-import { DOMAIN } from '@/constants/domain'
+import { HOST } from '@/constants/domain'
 
 const NotoSansKR = Noto_Sans_KR({
-  display: 'swap',
   preload: true,
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 })
 
 const PoppinsFont = Poppins({
-  display: 'swap',
   preload: true,
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -28,20 +26,20 @@ export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID
 
 export const generateMetadata = (): Metadata => {
   const description = '기록장'
-  const images = ['/images/default-thumbnail.png']
+  const images = [HOST + '/images/default-thumbnail.png']
 
   return {
     title: {
-      template: `%s | ${DOMAIN}`,
-      default: DOMAIN,
+      template: `%s | ${HOST}`,
+      default: HOST,
     },
     openGraph: {
-      title: DOMAIN,
+      title: HOST,
       description,
       images,
     },
     twitter: {
-      title: DOMAIN,
+      title: HOST,
       description,
       images,
     },

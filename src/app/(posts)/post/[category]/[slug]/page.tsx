@@ -6,6 +6,7 @@ import { PostContent } from '@/components/post/PostContent'
 import { PostContentThumbnail } from '@/components/post/PostContentThumbnail'
 import { PostHeader } from '@/components/post/PostHeader'
 import { PostTOC } from '@/components/post/PostTOC/PostTOC'
+import { HOST } from '@/constants/domain'
 
 interface PostPageProps {
   params: {
@@ -24,12 +25,12 @@ export const generateMetadata = ({
     openGraph: {
       title: `${post.title}`,
       description: post.description,
-      images: [post.thumbnail.src],
+      images: [HOST + post.thumbnail.src],
     },
     twitter: {
       title: `${post.title}`,
       description: post.description,
-      images: [post.thumbnail.src],
+      images: [HOST + post.thumbnail.src],
     },
   }
 }

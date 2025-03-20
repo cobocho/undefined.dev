@@ -5,6 +5,7 @@ import { PostContent } from '@/components/post/PostContent'
 import { PostHeader } from '@/components/post/PostHeader'
 import { PostTOC } from '@/components/post/PostTOC/PostTOC'
 import { getAllSnippets, getSnippet } from '@/apis/snippets'
+import { HOST } from '@/constants/domain'
 
 interface SnippetPageProps {
   params: {
@@ -23,12 +24,12 @@ export const generateMetadata = ({
     openGraph: {
       title: `${snippet.title}`,
       description: snippet.title,
-      images: ['/images/default-thumbnail.png'],
+      images: [HOST + '/images/default-thumbnail.png'],
     },
     twitter: {
       title: `${snippet.title}`,
       description: snippet.title,
-      images: ['/images/default-thumbnail.png'],
+      images: [HOST + '/images/default-thumbnail.png'],
     },
   }
 }
