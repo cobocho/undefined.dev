@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Start Timer
+        run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -31,3 +34,33 @@ jobs:
               docker container prune -f
               docker image prune -f
             "
+
+      - name: Calculate Elapsed Time
+        run: echo "ELAPSED_TIME=$(($(date +%s) - $START_TIME))" >> $GITHUB_ENV
+        if: always()
+
+      - name: Send Discord Notification
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          args: |
+            🚀 **배포 완료!** 
+            - 브랜치: `main`
+            - 📅 배포 완료 시간: $(date +'%Y-%m-%d %H:%M:%S')
+            - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
+            - 🌍 서비스 도메인: [🔗 Open](https://undefined.dev)
+
+      - name: Send Discord Notification (Failed)
+        uses: Ilshidur/action-discord@master
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          args: |
+            ❌ **배포 실패!** 
+            - 브랜치: `main`
+            - 상태: ❌ 실패
+            - 📅 배포 실패 시간: $(date +'%Y-%m-%d %H:%M:%S')
+            - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
+            - 🌍 서비스 도메인: [🔗 Open](https://undefined.dev)
