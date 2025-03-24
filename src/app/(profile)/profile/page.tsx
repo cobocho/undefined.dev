@@ -31,12 +31,7 @@ export default function Home() {
           </div>
           <div className="flex gap-2">
             <p className="font-medium">E-Mail</p>
-            <a
-              href="https://github.com/cobocho"
-              target="_blank"
-              rel="noreferrer"
-              className="font-thin"
-            >
+            <a href="mailto:contact@un-defined.dev" className="font-thin">
               contact@un-defined.dev
             </a>
           </div>
