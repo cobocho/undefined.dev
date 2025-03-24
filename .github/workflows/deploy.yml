@@ -21,6 +21,7 @@ jobs:
         with:
           args: |
             🚀 **[undefined.dev](https://un-defined.dev) 배포 시작!**
+            - 🔗 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -58,6 +59,7 @@ jobs:
             🚀 **[undefined.dev](https://un-defined.dev) 배포 완료!** 
             - 브랜치: `main`
             - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
+            - 🔗 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
       - name: Send Discord Notification (Failed)
         uses: Ilshidur/action-discord@master
@@ -70,3 +72,4 @@ jobs:
             - 브랜치: `main`
             - 상태: ❌ 실패
             - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
+            - 🔗 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
