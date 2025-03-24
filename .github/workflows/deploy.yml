@@ -13,6 +13,15 @@ jobs:
       - name: Start Timer
         run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
 
+      - name: Send Discord Notification (Start)
+        uses: Ilshidur/action-discord@master
+        if: always()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          args: |
+            🚀 **[undefined.dev](https://un-defined.dev) 배포 시작!**
+
       - name: Checkout Repository
         uses: actions/checkout@v4
 

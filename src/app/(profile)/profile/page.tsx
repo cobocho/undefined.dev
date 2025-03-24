@@ -37,7 +37,7 @@ export default function Home() {
               rel="noreferrer"
               className="font-thin"
             >
-              rlaalsrb1111@naver.com
+              contact@un-defined.dev
             </a>
           </div>
         </div>
