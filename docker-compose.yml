@@ -39,6 +39,7 @@ services:
       - 'traefik.http.routers.http-redirect.middlewares=redirect-to-https'
 
       - 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https'
+      - 'traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true'
 
     networks:
       - web
