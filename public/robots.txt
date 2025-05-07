@@ -1,9 +1,10 @@
-# *
-User-agent: *
+User-agent: Googlebot
 Allow: /
 
-# Host
-Host: https://un-defined.dev
+User-agent: Yeti
+Allow: /
 
-# Sitemaps
+User-agent: *
+Disallow: /
+
 Sitemap: https://un-defined.dev/sitemap.xml
