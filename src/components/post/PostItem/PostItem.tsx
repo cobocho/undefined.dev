@@ -46,7 +46,7 @@ export const PostItem = ({ post }: PostItemProps) => {
           </motion.h2>
           <motion.p
             layoutId={generatePostLayoutId('description', post)}
-            className="font-light italic text-outline opacity-80"
+            className="font-regular italic text-outline opacity-80"
           >
             {post.description}
           </motion.p>

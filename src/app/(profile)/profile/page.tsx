@@ -7,10 +7,10 @@ export default function Home() {
       <Title>Profile</Title>
       <AppearBottom delay={0.3} className="mb-4 flex items-end gap-4">
         <p className="text-3xl font-bold">김민규</p>
-        <p className="text-xl font-thin">Kim Min Gyu</p>
+        <p className="font-regular text-xl">Kim Min Gyu</p>
       </AppearBottom>
       <AppearBottom delay={0.6} className="mb-4">
-        <p className="font-[300]">
+        <p>
           프론트엔드 개발자 김민규입니다.
           <br /> 맥주와 리버풀을 좋아합니다.
         </p>
@@ -24,14 +24,14 @@ export default function Home() {
               href="https://github.com/cobocho"
               target="_blank"
               rel="noreferrer"
-              className="font-thin"
+              className="font-regular"
             >
               https://github.com/cobocho
             </a>
           </div>
           <div className="flex gap-2">
             <p className="font-medium">E-Mail</p>
-            <a href="mailto:contact@un-defined.dev" className="font-thin">
+            <a href="mailto:contact@un-defined.dev" className="font-regular">
               contact@un-defined.dev
             </a>
           </div>

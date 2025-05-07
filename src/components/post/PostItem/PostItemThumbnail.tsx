@@ -36,7 +36,7 @@ export const PostItemThumbnail = ({ post }: PostItemThumbnailProps) => {
           <p className="translate-y-4 text-4xl font-semibold italic text-white opacity-0 transition-all delay-700 duration-500 group-hover:translate-y-0 group-hover:opacity-100">
             {month}
           </p>
-          <p className="translate-y-4 text-3xl font-thin text-white opacity-0 transition-all delay-500 duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+          <p className="font-regular translate-y-4 text-3xl text-white opacity-0 transition-all delay-500 duration-500 group-hover:translate-y-0 group-hover:opacity-100">
             {day}
           </p>
         </div>

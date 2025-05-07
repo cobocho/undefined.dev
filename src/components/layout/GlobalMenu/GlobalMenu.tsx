@@ -92,7 +92,7 @@ const GlobalMenuItem = ({
       <Link
         href={href}
         className={cn(
-          'group relative w-full text-center font-light text-white transition-all delay-[50] mobile:text-2xl',
+          'font-regular group relative w-full text-center text-white transition-all delay-[50] mobile:text-2xl',
           isMatched && 'font-bold italic text-black',
         )}
         onClick={onClickMenuItem}

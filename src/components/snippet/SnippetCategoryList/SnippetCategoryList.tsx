@@ -44,7 +44,7 @@ export const SnippetCategoryList = ({
             translateX: 5,
             fontWeight: 'medium',
           }}
-          className="rounded-lg bg-gray-400/20 px-4 py-3 font-light backdrop-blur-md transition duration-300 hover:shadow-xl"
+          className="font-regular rounded-lg bg-gray-400/20 px-4 py-3 backdrop-blur-md transition duration-300 hover:shadow-xl"
         >
           / {category.name}
         </MotionLink>

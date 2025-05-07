@@ -17,7 +17,7 @@ export default function Home() {
     <div>
       <AppearBottom className="flex h-fit w-full items-center justify-between pb-10 pt-20">
         <h1 className="text-5xl font-bold italic text-outline">New Posts</h1>
-        <Link href="/1" className="group font-thin">
+        <Link href="/1" className="font-regular group">
           More +
           <div className="h-[1px] w-full origin-left scale-x-0 bg-outline/50 transition-transform group-hover:scale-x-100" />
         </Link>

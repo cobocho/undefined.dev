@@ -33,8 +33,8 @@ export const PostTOC = () => {
             }}
             key={head.id}
             className={cn(
-              `font-light ${head.nodeName}-header transform-all duration-200`,
-              currentHeader === head.id && 'font-bold italic',
+              `text-gray-500 ${head.nodeName}-header transform-all duration-200`,
+              currentHeader === head.id && 'font-bold italic text-black',
             )}
           >
             <a href={`#${head.id}`}>{head.textContent}</a>

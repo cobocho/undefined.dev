@@ -27,7 +27,7 @@ export const OutLineMenu = ({ children }: OutLineMenuProps) => {
         <div className="flex">
           <Link href="/">
             <AppearLeft className="flex select-none items-end gap-1 p-2 pb-4 pr-4 text-5xl font-[800] italic text-white mobile:p-1 mobile:pb-2 mobile:pr-2 mobile:pt-0 mobile:text-xl">
-              undefined<p className="text-lg font-light not-italic">.dev</p>
+              undefined<p className="font-regular text-lg not-italic">.dev</p>
             </AppearLeft>
           </Link>
           <div className="absolute left-full ml-10 flex h-full items-center justify-center mobile:ml-2 mobile:hidden">

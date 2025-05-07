@@ -43,7 +43,7 @@ export const PostHeader = ({ post, isSnippet = false }: PostHeaderProps) => {
       </div>
       {post.description && (
         <motion.p
-          className="break-keep text-center text-xl font-thin leading-[120%]"
+          className="break-keep text-center text-xl leading-[120%] text-gray-400"
           layoutId={generatePostLayoutId('description', post)}
         >
           {post.description}
