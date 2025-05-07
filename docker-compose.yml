@@ -18,7 +18,6 @@ services:
     volumes:
       - './letsencrypt:/letsencrypt'
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
-
     networks:
       - web
 
@@ -29,11 +28,17 @@ services:
     restart: unless-stopped
     labels:
       - 'traefik.enable=true'
+
       - 'traefik.http.routers.blog.rule=Host(`un-defined.dev`) || Host(`www.un-defined.dev`)'
-      - 'traefik.http.routers.blog.entrypoints=web'
       - 'traefik.http.routers.blog.entrypoints=websecure'
       - 'traefik.http.routers.blog.tls.certresolver=myresolver'
       - 'traefik.http.services.blog.loadbalancer.server.port=3000'
+
+      - 'traefik.http.routers.http-redirect.rule=Host(`un-defined.dev`) || Host(`www.un-defined.dev`)'
+      - 'traefik.http.routers.http-redirect.entrypoints=web'
+      - 'traefik.http.routers.http-redirect.middlewares=redirect-to-https'
+
+      - 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https'
 
     networks:
       - web
