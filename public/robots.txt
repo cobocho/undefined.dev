@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://www.un-defined.dev
+Host: https://un-defined.dev
 
 # Sitemaps
-Sitemap: https://www.un-defined.dev/sitemap.xml
+Sitemap: https://un-defined.dev/sitemap.xml
