@@ -9,6 +9,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Start Timer
         run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
