@@ -65,8 +65,8 @@ export const Carousel = ({ posts }: CarouselProps) => {
         <div className="embla__viewport relative scrollbar-hide" ref={emblaRef}>
           <div className="embla__container scrollbar-hide">
             {posts.map((post, idx) => (
-              <div className="embla__slide aspect-[4/3]" key={post.title}>
-                <AppearBottom className="h-full w-full" delay={0.5}>
+              <div className="embla__slide" key={post.title}>
+                <AppearBottom className="h-[400px] w-full" delay={0.5}>
                   <motion.div
                     variants={{
                       rest: { scaleY: 0.8, scaleX: 0.85, opacity: 0.6 },
