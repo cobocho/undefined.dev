@@ -1,4 +1,4 @@
-name: Deploy to Server via SSH
+name: Deploy and Update GitOps Repo
 
 on:
   push:
@@ -10,38 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
-      packages: write
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Start Timer
         run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
 
-      - name: Send Discord Notification (Start)
-        uses: Ilshidur/action-discord@master
-        if: always()
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        with:
-          args: |
-            🚀 **[undefined.dev](https://un-defined.dev) 배포 시작!**
-            - 🔗 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-
-      - name: Checkout Repository
+      - name: Checkout source repo
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Calculate Elapsed Time
-        run: echo "ELAPSED_TIME=$(($(date +%s) - $START_TIME))" >> $GITHUB_ENV
-        if: always()
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -49,30 +29,71 @@ jobs:
       - name: Build and push Docker image
         run: |
           IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/blog
-          docker build -t $IMAGE_NAME:latest .
-          docker push $IMAGE_NAME:latest
+          IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          docker push $IMAGE_NAME:$IMAGE_TAG
 
-      - name: Send Discord Notification
-        uses: Ilshidur/action-discord@master
-        if: success()
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - name: Checkout GitOps repo
+        uses: actions/checkout@v4
         with:
-          args: |
-            🚀 **[undefined.dev](https://un-defined.dev) 배포 완료!** 
-            - 브랜치: `main`
-            - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
-            - 🔗 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          repository: cobocho/gitops
+          token: ${{ secrets.GITOPS_REPO_ACCESS }}
+          path: gitops
+
+      - name: Update image tag in GitOps repo
+        run: |
+          cd gitops
+          FILE=path/to/deployment.yaml
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/blog
+          sed -i "s|$IMAGE_NAME:.*|$IMAGE_NAME:${{ env.IMAGE_TAG }}|g" $FILE
+
+      - name: Create Pull Request to GitOps repo
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITOPS_REPO_ACCESS }}
+          path: gitops
+          commit-message: 'Update blog image tag to ${{ env.IMAGE_TAG }}'
+          branch: update/image-${{ env.IMAGE_TAG }}
+          title: 'Update image tag to ${{ env.IMAGE_TAG }}'
+          body: |
+            This PR updates the deployment image tag to `${{ env.IMAGE_TAG }}`.
+
+      - name: Send Discord Notification with Button
+        if: success()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{
+              "content": "✅ **[undefined.dev](https://un-defined.dev) 컨테이너 업로드 완료!**",
+              "components": [
+                {
+                  "type": 1,
+                  "components": [
+                    {
+                      "type": 2,
+                      "style": 5,
+                      "label": "PULL REQUEST",
+                      "url": "${{ steps.cpr.outputs.pull-request-url }}"
+                    }
+                  ]
+                }
+              ]
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: Calculate Elapsed Time
+        run: echo "ELAPSED_TIME=$(($(date +%s) - $START_TIME))" >> $GITHUB_ENV
+        if: always()
 
       - name: Send Discord Notification (Failed)
-        uses: Ilshidur/action-discord@master
         if: failure()
+        uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
           args: |
-            ❌ **[undefined.dev](https://un-defined.dev) 배포 실패!** 
+            ❌ **[undefined.dev](https://un-defined.dev) 배포 실패!**
             - 브랜치: `main`
-            - 상태: ❌ 실패
             - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
             - 🔗 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
