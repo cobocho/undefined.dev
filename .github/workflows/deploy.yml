@@ -61,31 +61,21 @@ jobs:
           body: |
             This PR updates the image tag in \`blog-deploy.yaml\` to \`${{ env.IMAGE_TAG }}\`.
 
-      - name: Send Discord Notification with Button
-        if: success()
-        run: |
-          curl -X POST -H "Content-Type: application/json" \
-            -d '{
-              "content": "✅ **[undefined.dev](https://un-defined.dev) 컨테이너 업로드 완료!**",
-              "components": [
-                {
-                  "type": 1,
-                  "components": [
-                    {
-                      "type": 2,
-                      "style": 5,
-                      "label": "PULL REQUEST",
-                      "url": "${{ steps.cpr.outputs.pull-request-url }}"
-                    }
-                  ]
-                }
-              ]
-            }' \
-            ${{ secrets.DISCORD_WEBHOOK_URL }}
-
       - name: Calculate Elapsed Time
         run: echo "ELAPSED_TIME=$(($(date +%s) - $START_TIME))" >> $GITHUB_ENV
         if: always()
+
+      - name: Send Discord Notification (Success)
+        if: success()
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          args: |
+            ✅ **[undefined.dev](https://un-defined.dev) 컨테이너 업로드 완료!**
+            - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
+            - 🔗 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            - 🔗 [Pull Request](${{ steps.cpr.outputs.pull-request-url }})
 
       - name: Send Discord Notification (Failed)
         if: failure()
@@ -94,7 +84,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
           args: |
-            ❌ **[undefined.dev](https://un-defined.dev) 배포 실패!**
+            ❌ **[undefined.dev](https://un-defined.dev) 컨테이너 업로드 실패!**
             - 브랜치: `main`
             - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
             - 🔗 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
