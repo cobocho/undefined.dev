@@ -92,8 +92,8 @@ export const Carousel = ({ posts }: CarouselProps) => {
                       alt={post.title}
                     />
                     {idx === currentIndex && (
-                      <div className="absolute left-0 top-0 h-full w-full flex-col bg-[#00000000] transition-colors group-hover:bg-[#000000cb]">
-                        <div className="flex flex-col p-10 opacity-0 transition-opacity group-hover:opacity-100">
+                      <div className="absolute left-0 top-0 h-full w-full flex-col bg-black/50 transition-colors">
+                        <div className="flex h-full flex-col justify-between p-10 transition-opacity">
                           <div className="flex flex-col items-end gap-3">
                             <h2 className="text-balance text-end text-2xl font-semibold text-white">
                               {post.title}
@@ -101,6 +101,19 @@ export const Carousel = ({ posts }: CarouselProps) => {
                             <p className="text-end text-white">
                               {post.description}
                             </p>
+                            <p className="text-end text-gray-300">
+                              {post.date}
+                            </p>
+                          </div>
+                          <div className="flex w-full flex-wrap justify-end gap-4">
+                            {post.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="font-bold text-gray-300"
+                              >
+                                {tag}
+                              </span>
+                            ))}
                           </div>
                         </div>
                       </div>
