@@ -22,7 +22,7 @@ const PoppinsFont = Poppins({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 })
 
-export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID
+export const GA_TRACKING_ID = 'G-HT07LQYBG3'
 
 export const generateMetadata = (): Metadata => {
   const description = '기록장'
@@ -66,7 +66,7 @@ export default function RootLayout({
           </div>
           <AutoScroll />
         </OutLineMenu>
-        <GoogleAnalytics gaId={GA_TRACKING_ID || ''} />
+        <GoogleAnalytics gaId={GA_TRACKING_ID} />
       </body>
     </html>
   )
