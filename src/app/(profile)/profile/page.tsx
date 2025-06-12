@@ -26,13 +26,24 @@ export default function Home() {
               rel="noreferrer"
               className="font-regular"
             >
-              https://github.com/cobocho
+              github.com/cobocho
             </a>
           </div>
           <div className="flex gap-2">
             <p className="font-medium">E-Mail</p>
             <a href="mailto:contact@un-defined.dev" className="font-regular">
               contact@un-defined.dev
+            </a>
+          </div>
+          <div className="flex gap-2">
+            <p className="font-medium">Resume</p>
+            <a
+              href="https://resume.un-defined.dev"
+              target="_blank"
+              rel="noreferrer"
+              className="font-regular"
+            >
+              resume.un-defined.dev
             </a>
           </div>
         </div>
