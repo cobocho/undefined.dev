@@ -21,6 +21,20 @@ jobs:
       - name: Checkout source repo
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -72,7 +86,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
           args: |
-            ✅ **[undefined.dev](https://un-defined.dev) 컨테이너 업로드 완료!**
+            ✅ **undefined.dev 컨테이너 업로드 완료!**
             - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
             - 🔗 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
             - 🔗 [Pull Request](${{ steps.cpr.outputs.pull-request-url }})
@@ -84,7 +98,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
           args: |
-            ❌ **[undefined.dev](https://un-defined.dev) 컨테이너 업로드 실패!**
+            ❌ **undefined.dev 컨테이너 업로드 실패!**
             - 브랜치: `main`
             - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
             - 🔗 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
