@@ -4,15 +4,21 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'Dockerfile'
+      - 'apps/blog/**'
+      - '.github/workflows/deploy.yml'
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
       packages: write
-      pull-requests: write
+
+    outputs:
+      image_tag: ${{ steps.set-tag.outputs.image_tag }}
 
     steps:
       - name: Start Timer
@@ -20,6 +26,14 @@ jobs:
 
       - name: Checkout source repo
         uses: actions/checkout@v4
+
+      - name: Setup pnpm store cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -35,20 +49,37 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Set image tag
+        id: set-tag
+        run: echo "image_tag=$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Login to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build and push Docker image
-        run: |
-          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/blog
-          IMAGE_TAG=$(date +%Y%m%d%H%M%S)
-          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
-          docker build -t $IMAGE_NAME:$IMAGE_TAG .
-          docker push $IMAGE_NAME:$IMAGE_TAG
+      - name: Build and push Docker image with cache
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/blog:${{ steps.set-tag.outputs.image_tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
+  update-gitops:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    outputs:
+      pr_url: ${{ steps.cpr.outputs.pull-request-url }}
+
+    steps:
       - name: Checkout GitOps repo
         uses: actions/checkout@v4
         with:
@@ -57,30 +88,46 @@ jobs:
           path: gitops
 
       - name: Update image tag in GitOps repo
+        id: update-tag
         run: |
           cd gitops
           FILE=./blog/blog-deploy.yaml
           IMAGE_NAME=ghcr.io/cobocho/blog
-          sed -i "s|$IMAGE_NAME:.*|$IMAGE_NAME:${{ env.IMAGE_TAG }}|g" $FILE
+          OLD_TAG=$(grep "$IMAGE_NAME" $FILE | sed 's/.*://')
+          NEW_TAG=${{ needs.build-and-push.outputs.image_tag }}
+          if [ "$OLD_TAG" = "$NEW_TAG" ]; then
+            echo "No change in tag. Skipping PR."
+            echo "skip_pr=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          sed -i "s|$IMAGE_NAME:.*|$IMAGE_NAME:$NEW_TAG|g" $FILE
+          echo "skip_pr=false" >> $GITHUB_OUTPUT
 
-      - name: Create Pull Request to GitOps repo
+      - name: Create Pull Request
+        if: steps.update-tag.outputs.skip_pr == 'false'
         id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITOPS_REPO_ACCESS }}
           path: gitops
-          commit-message: 'chore: update blog image tag to ${{ env.IMAGE_TAG }}'
-          branch: update/image-${{ env.IMAGE_TAG }}
-          title: 'Update blog image tag to ${{ env.IMAGE_TAG }}'
+          commit-message: 'chore: update blog image tag to ${{ needs.build-and-push.outputs.image_tag }}'
+          branch: update/image-${{ needs.build-and-push.outputs.image_tag }}
+          title: 'Update blog image tag to ${{ needs.build-and-push.outputs.image_tag }}'
           body: |
-            This PR updates the image tag in \`blog-deploy.yaml\` to \`${{ env.IMAGE_TAG }}\`.
+            This PR updates the image tag in \`blog-deploy.yaml\` to \`${{ needs.build-and-push.outputs.image_tag }}\`.
 
+  notify:
+    runs-on: ubuntu-latest
+    needs: [build-and-push, update-gitops]
+
+    if: always()
+
+    steps:
       - name: Calculate Elapsed Time
         run: echo "ELAPSED_TIME=$(($(date +%s) - $START_TIME))" >> $GITHUB_ENV
-        if: always()
 
       - name: Send Discord Notification (Success)
-        if: success()
+        if: ${{ success() }}
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -89,10 +136,10 @@ jobs:
             ✅ **undefined.dev 컨테이너 업로드 완료!**
             - ⏱ 소요 시간: `${{ env.ELAPSED_TIME }}`초
             - 🔗 [Workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            - 🔗 [Pull Request](${{ steps.cpr.outputs.pull-request-url }})
+            - 🔗 [Pull Request](${{ needs.update-gitops.outputs.pr_url }})
 
       - name: Send Discord Notification (Failed)
-        if: failure()
+        if: ${{ failure() }}
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
