@@ -11,7 +11,7 @@ import { getCategories } from '@/apis/category'
 export default function Home() {
   const { posts, postQuantity } = getPosts({ page: 1 })
   const categories = getCategories()
-  const newPosts = posts.splice(0, 5)
+  const newPosts = posts.slice(0, 5)
 
   return (
     <div>
@@ -25,7 +25,9 @@ export default function Home() {
       <div className="relative mb-20 h-fit w-dvw -translate-x-[calc((100vw_-_900px)_/_2)] transform mobile:w-full mobile:translate-x-0">
         <Carousel posts={newPosts} />
       </div>
-      <CategoryList categories={categories} />
+      <AppearBottom>
+        <CategoryList categories={categories} />
+      </AppearBottom>
       <PostList posts={posts} />
       <div className="mt-20 flex items-center justify-center">
         <Pagination postQuantity={postQuantity} />
