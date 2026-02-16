@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { Noto_Sans_KR, Poppins } from 'next/font/google'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
-import { AutoScroll } from '@/components/layout/AutoScroll'
 import { OutLineMenu } from '@/components/layout/OutLineMenu'
 
 import './globals.css'
@@ -64,7 +63,6 @@ export default function RootLayout({
           >
             {children}
           </div>
-          <AutoScroll />
         </OutLineMenu>
         <GoogleAnalytics gaId={GA_TRACKING_ID} />
       </body>
