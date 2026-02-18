@@ -28,7 +28,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const posts = getPostsByCategory(slug);
 
   return (
-    <div>
+    <div className="py-10">
       <div className="mb-2 flex items-center gap-4">
         <Link href="/">
           <ChevronLeft className="size-8 text-neutral-500" />

@@ -22,7 +22,7 @@ export default async function Home() {
   );
 
   return (
-    <div>
+    <div className="py-10">
       <h1 className="mb-6 text-3xl font-bold">홈</h1>
       <div className="mb-12">
         <h2 className="mb-4 text-xl font-bold">최근 게시물</h2>
@@ -54,11 +54,6 @@ export default async function Home() {
                 <PostItem post={post} />
               </Link>
             ))}
-            {hasMore && (
-              <div className="mt-4">
-                <span>More</span>
-              </div>
-            )}
           </ScrollablePostList>
         </div>
       ))}
