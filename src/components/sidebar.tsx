@@ -35,7 +35,15 @@ export const Sidebar = ({ categories }: SidebarProps) => {
         </Link>
         <Link href="/search">
           <MenuItem
-            icon={<FileSearchCorner className="size-5 text-blue-500" />}
+            icon={
+              <FileSearchCorner
+                className={cn(
+                  "size-5 text-blue-500",
+                  pathname === "/search" && "text-white",
+                )}
+              />
+            }
+            isActive={pathname === "/search"}
           >
             Search
           </MenuItem>

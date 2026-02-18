@@ -15,6 +15,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.19",
     "es-toolkit": "^1.44.0",
+    "flexsearch": "^0.8.212",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.571.0",
     "motion": "^12.34.1",

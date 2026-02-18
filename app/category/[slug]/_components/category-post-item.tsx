@@ -18,7 +18,7 @@ export function CategoryPostItem({
       className="group flex cursor-pointer gap-5 rounded-xl p-3 transition-all duration-200 hover:bg-neutral-50"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, delay, ease: "easeIn" }}
+      transition={{ delay }}
     >
       <div className="relative h-[100px] w-[160px] min-w-[160px] overflow-hidden rounded-lg">
         <Image

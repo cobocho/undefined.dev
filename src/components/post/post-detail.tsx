@@ -31,7 +31,6 @@ export const PostDetail = ({
         className="flex w-full flex-1 justify-center py-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
       >
         <article className="w-full max-w-[1200px]">
           <div className="max-w-full">
@@ -125,7 +124,6 @@ export const PostDetail = ({
         className="relative z-50 hidden w-[280px] shrink-0 border-l bg-white/90 p-6 backdrop-blur-md min-[1600px]:block"
         initial={{ opacity: 0, x: 40 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5 }}
       >
         <div className="sticky top-10">
           <TableOfContents />

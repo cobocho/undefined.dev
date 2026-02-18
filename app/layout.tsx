@@ -38,7 +38,7 @@ export default function RootLayout({
       >
         <div className="flex h-screen overflow-y-hidden">
           <div className="fixed top-0 left-0 z-50 h-screen w-80 p-4">
-            <Sidebar categories={categories} tags={tags} />
+            <Sidebar categories={categories} />
           </div>
           <div
             id="content-wrapper"
