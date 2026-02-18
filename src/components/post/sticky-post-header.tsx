@@ -26,9 +26,8 @@ export function StickyPostHeader({ title, onBack }: StickyPostHeaderProps) {
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
-    if (!sentinel) return;
 
-    const root = document.getElementById("content-wrapper");
+    if (!sentinel) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -36,7 +35,7 @@ export function StickyPostHeader({ title, onBack }: StickyPostHeaderProps) {
         setVisible(isVisible);
         if (isVisible) updateRect();
       },
-      { root, threshold: 0 },
+      { root: null, threshold: 0 },
     );
 
     observer.observe(sentinel);

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { SITE_NAME } from "@/constants/site-metadata";
+
 import { SearchPageClient } from "../../src/components/search/search-page-client";
 
 export const metadata: Metadata = {

@@ -127,7 +127,7 @@ export const PostDetail = ({
       </motion.div>
 
       <motion.div
-        className="relative z-50 hidden w-[280px] shrink-0 border-l bg-white/90 p-6 backdrop-blur-md min-[1600px]:block dark:border-neutral-700 dark:bg-neutral-900/90"
+        className="fixed top-0 right-0 z-50 hidden h-screen w-[280px] overflow-hidden border-l bg-white/90 p-6 backdrop-blur-md min-[1600px]:block dark:border-neutral-700 dark:bg-neutral-900/90"
         initial={{ opacity: 0, x: 40 }}
         animate={{ opacity: 1, x: 0 }}
       >
