@@ -111,7 +111,7 @@ export function MobileBottomTab() {
           />
           <button
             onClick={toggleTheme}
-            className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-md text-[11px] font-semibold text-neutral-500 transition-colors duration-200 dark:text-neutral-400"
+            className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-md text-[11px] font-semibold text-neutral-500 transition-colors duration-200 dark:text-neutral-100"
           >
             {theme === "dark" ? (
               <Sun className="size-6" />
