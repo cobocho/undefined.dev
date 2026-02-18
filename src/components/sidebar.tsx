@@ -49,7 +49,17 @@ export const Sidebar = ({ categories }: SidebarProps) => {
           </MenuItem>
         </Link>
         <Link href="/about">
-          <MenuItem icon={<UserRoundSearch className="size-5 text-blue-500" />}>
+          <MenuItem
+            icon={
+              <UserRoundSearch
+                className={cn(
+                  "size-5 text-blue-500",
+                  pathname === "/about" && "text-white",
+                )}
+              />
+            }
+            isActive={pathname === "/about"}
+          >
             About Me
           </MenuItem>
         </Link>

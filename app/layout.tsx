@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import { getCategories } from "@/apis/category";
 import { getAllTags } from "@/apis/tag";
+import { MobileBottomTab } from "@/components/mobile-bottom-tab";
 import { ScrollRestoration } from "@/components/scroll-restoration";
 import { Sidebar } from "@/components/sidebar";
 
@@ -37,16 +38,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="flex h-screen overflow-y-hidden">
-          <div className="fixed top-0 left-0 z-50 h-screen w-80 p-4">
+          <div className="fixed top-0 left-0 z-50 hidden h-screen w-80 p-4 md:block">
             <Sidebar categories={categories} />
           </div>
           <div
             id="content-wrapper"
-            className="flex-1 overflow-x-hidden overflow-y-scroll pr-4 pl-84"
+            className="flex-1 overflow-x-hidden overflow-y-scroll px-4 pb-24 md:pr-4 md:pb-0 md:pl-84"
           >
             <ScrollRestoration />
             {children}
           </div>
+          <MobileBottomTab />
         </div>
       </body>
     </html>

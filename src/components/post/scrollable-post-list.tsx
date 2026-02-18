@@ -8,15 +8,22 @@ interface ScrollablePostListProps {
 }
 
 const SCROLL_AMOUNT = 300;
+const MOMENTUM_FRICTION = 0.92;
+const MOMENTUM_MIN_VELOCITY = 0.02;
 
 export const ScrollablePostList = ({ children }: ScrollablePostListProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isMomentumScrolling, setIsMomentumScrolling] = useState(false);
   const [hasDragged, setHasDragged] = useState(false);
   const [translateX, setTranslateX] = useState(0);
-  const dragState = useRef({ startX: 0, startTranslateX: 0 });
+  const dragState = useRef({ startX: 0, startY: 0, startTranslateX: 0 });
   const didDragRef = useRef(false);
+  const momentumFrameRef = useRef<number | null>(null);
+  const velocityRef = useRef(0);
+  const lastMoveRef = useRef({ x: 0, time: 0 });
+  const translateXRef = useRef(0);
 
   const getMaxScroll = useCallback(() => {
     const wrapper = wrapperRef.current;
@@ -36,6 +43,56 @@ export const ScrollablePostList = ({ children }: ScrollablePostListProps) => {
   const [maxScroll, setMaxScroll] = useState(0);
 
   useEffect(() => {
+    translateXRef.current = translateX;
+  }, [translateX]);
+
+  const stopMomentum = useCallback(() => {
+    if (momentumFrameRef.current !== null) {
+      cancelAnimationFrame(momentumFrameRef.current);
+      momentumFrameRef.current = null;
+    }
+    velocityRef.current = 0;
+    setIsMomentumScrolling(false);
+  }, []);
+
+  const startMomentum = useCallback(() => {
+    if (Math.abs(velocityRef.current) < MOMENTUM_MIN_VELOCITY) {
+      stopMomentum();
+      return;
+    }
+
+    setIsMomentumScrolling(true);
+    let previousTime = performance.now();
+
+    const step = (now: number) => {
+      const deltaTime = now - previousTime;
+      previousTime = now;
+
+      velocityRef.current *= Math.pow(MOMENTUM_FRICTION, deltaTime / 16);
+
+      if (Math.abs(velocityRef.current) < MOMENTUM_MIN_VELOCITY) {
+        stopMomentum();
+        return;
+      }
+
+      const nextTranslate = clamp(
+        translateXRef.current + velocityRef.current * deltaTime,
+      );
+
+      if (nextTranslate === translateXRef.current) {
+        stopMomentum();
+        return;
+      }
+
+      translateXRef.current = nextTranslate;
+      setTranslateX(nextTranslate);
+      momentumFrameRef.current = requestAnimationFrame(step);
+    };
+
+    momentumFrameRef.current = requestAnimationFrame(step);
+  }, [clamp, stopMomentum]);
+
+  useEffect(() => {
     setMaxScroll(getMaxScroll());
   }, [getMaxScroll]);
 
@@ -43,22 +100,47 @@ export const ScrollablePostList = ({ children }: ScrollablePostListProps) => {
   const canScrollRight = -translateX < maxScroll;
 
   const scrollLeft = useCallback(() => {
+    stopMomentum();
     setTranslateX((prev) => clamp(prev + SCROLL_AMOUNT));
-  }, [clamp]);
+  }, [clamp, stopMomentum]);
 
   const scrollRight = useCallback(() => {
+    stopMomentum();
     setTranslateX((prev) => clamp(prev - SCROLL_AMOUNT));
-  }, [clamp]);
+  }, [clamp, stopMomentum]);
 
   const onMouseDown = useCallback(
     (e: MouseEvent) => {
+      stopMomentum();
       setIsDragging(true);
       dragState.current = {
         startX: e.pageX,
+        startY: 0,
         startTranslateX: translateX,
       };
+      lastMoveRef.current = { x: translateX, time: e.timeStamp };
+      velocityRef.current = 0;
     },
-    [translateX],
+    [translateX, stopMomentum],
+  );
+
+  const onTouchStart = useCallback(
+    (e: TouchEvent) => {
+      const touch = e.touches[0];
+
+      if (!touch) return;
+
+      stopMomentum();
+      setIsDragging(true);
+      dragState.current = {
+        startX: touch.pageX,
+        startY: touch.pageY,
+        startTranslateX: translateX,
+      };
+      lastMoveRef.current = { x: translateX, time: e.timeStamp };
+      velocityRef.current = 0;
+    },
+    [translateX, stopMomentum],
   );
 
   const onMouseMove = useCallback(
@@ -70,15 +152,75 @@ export const ScrollablePostList = ({ children }: ScrollablePostListProps) => {
         didDragRef.current = true;
         setHasDragged(true);
       }
-      setTranslateX(clamp(dragState.current.startTranslateX + delta));
+
+      const nextTranslate = clamp(dragState.current.startTranslateX + delta);
+      const deltaTime = e.timeStamp - lastMoveRef.current.time;
+
+      if (deltaTime > 0) {
+        velocityRef.current =
+          (nextTranslate - lastMoveRef.current.x) / deltaTime;
+      }
+
+      lastMoveRef.current = { x: nextTranslate, time: e.timeStamp };
+      setTranslateX(nextTranslate);
     },
     [isDragging, clamp],
   );
 
   const onMouseUpOrLeave = useCallback(() => {
+    if (!isDragging) return;
+
     setIsDragging(false);
     requestAnimationFrame(() => setHasDragged(false));
-  }, []);
+
+    if (Math.abs(velocityRef.current) >= MOMENTUM_MIN_VELOCITY) {
+      startMomentum();
+    }
+  }, [isDragging, startMomentum]);
+
+  const onTouchMove = useCallback(
+    (e: TouchEvent) => {
+      if (!isDragging) return;
+
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      const deltaX = touch.pageX - dragState.current.startX;
+      const deltaY = touch.pageY - dragState.current.startY;
+
+      if (Math.abs(deltaX) <= Math.abs(deltaY)) return;
+
+      e.preventDefault();
+
+      if (Math.abs(deltaX) > 5) {
+        didDragRef.current = true;
+        setHasDragged(true);
+      }
+
+      const nextTranslate = clamp(dragState.current.startTranslateX + deltaX);
+      const deltaTime = e.timeStamp - lastMoveRef.current.time;
+
+      if (deltaTime > 0) {
+        velocityRef.current =
+          (nextTranslate - lastMoveRef.current.x) / deltaTime;
+      }
+
+      lastMoveRef.current = { x: nextTranslate, time: e.timeStamp };
+      setTranslateX(nextTranslate);
+    },
+    [isDragging, clamp],
+  );
+
+  const onTouchEnd = useCallback(() => {
+    if (!isDragging) return;
+
+    setIsDragging(false);
+    requestAnimationFrame(() => setHasDragged(false));
+
+    if (Math.abs(velocityRef.current) >= MOMENTUM_MIN_VELOCITY) {
+      startMomentum();
+    }
+  }, [isDragging, startMomentum]);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -99,6 +241,10 @@ export const ScrollablePostList = ({ children }: ScrollablePostListProps) => {
     wrapper.addEventListener("mousemove", onMouseMove);
     wrapper.addEventListener("mouseup", onMouseUpOrLeave);
     wrapper.addEventListener("mouseleave", onMouseUpOrLeave);
+    wrapper.addEventListener("touchstart", onTouchStart, { passive: true });
+    wrapper.addEventListener("touchmove", onTouchMove, { passive: false });
+    wrapper.addEventListener("touchend", onTouchEnd);
+    wrapper.addEventListener("touchcancel", onTouchEnd);
     wrapper.addEventListener("dragstart", handleDragStart);
     wrapper.addEventListener("click", handleClickCapture, true);
 
@@ -107,10 +253,21 @@ export const ScrollablePostList = ({ children }: ScrollablePostListProps) => {
       wrapper.removeEventListener("mousemove", onMouseMove);
       wrapper.removeEventListener("mouseup", onMouseUpOrLeave);
       wrapper.removeEventListener("mouseleave", onMouseUpOrLeave);
+      wrapper.removeEventListener("touchstart", onTouchStart);
+      wrapper.removeEventListener("touchmove", onTouchMove);
+      wrapper.removeEventListener("touchend", onTouchEnd);
+      wrapper.removeEventListener("touchcancel", onTouchEnd);
       wrapper.removeEventListener("dragstart", handleDragStart);
       wrapper.removeEventListener("click", handleClickCapture, true);
     };
-  }, [onMouseDown, onMouseMove, onMouseUpOrLeave]);
+  }, [
+    onMouseDown,
+    onMouseMove,
+    onMouseUpOrLeave,
+    onTouchStart,
+    onTouchMove,
+    onTouchEnd,
+  ]);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -123,12 +280,19 @@ export const ScrollablePostList = ({ children }: ScrollablePostListProps) => {
       if (max <= 0) return;
 
       e.preventDefault();
+      stopMomentum();
       setTranslateX((prev) => clamp(prev - e.deltaX));
     };
 
     wrapper.addEventListener("wheel", handleWheel, { passive: false });
     return () => wrapper.removeEventListener("wheel", handleWheel);
-  }, [getMaxScroll, clamp]);
+  }, [getMaxScroll, clamp, stopMomentum]);
+
+  useEffect(() => {
+    return () => {
+      stopMomentum();
+    };
+  }, [stopMomentum]);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -155,13 +319,16 @@ export const ScrollablePostList = ({ children }: ScrollablePostListProps) => {
       {canScrollRight && (
         <ScrollButton direction="right" onClick={scrollRight} />
       )}
-      <div ref={wrapperRef} className="overflow-visible">
+      <div ref={wrapperRef} className="touch-pan-y overflow-visible">
         <div
           ref={innerRef}
           className="flex w-fit items-center gap-4"
           style={{
             transform: `translateX(${translateX}px)`,
-            transition: isDragging ? "none" : "transform 0.15s ease-out",
+            transition:
+              isDragging || isMomentumScrolling
+                ? "none"
+                : "transform 0.15s ease-out",
             pointerEvents: hasDragged ? "none" : "auto",
           }}
         >
