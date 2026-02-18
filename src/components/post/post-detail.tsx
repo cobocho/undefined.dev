@@ -32,7 +32,7 @@ export const PostDetail = ({
   return (
     <div className="flex gap-10">
       <motion.div
-        className="flex w-full flex-1 justify-center py-10 pr-[280px] md:pr-4"
+        className="flex w-full flex-1 justify-center py-10 pr-[300px] max-[1600px]:pr-4 max-[1024px]:pr-0"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
