@@ -1,8 +1,16 @@
 import { FolderOpen, Hash } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { getCategories } from "@/apis/category";
 import { getPostsByCategory } from "@/apis/post";
+
+export const metadata: Metadata = {
+  title: "카테고리",
+  alternates: {
+    canonical: "/category",
+  },
+};
 
 export default function CategoryIndexPage() {
   const categories = getCategories();
@@ -37,7 +45,9 @@ export default function CategoryIndexPage() {
                 {category}
               </span>
             </div>
-            <span className="text-sm text-neutral-500 dark:text-neutral-400">{count} posts</span>
+            <span className="text-sm text-neutral-500 dark:text-neutral-400">
+              {count} posts
+            </span>
           </Link>
         ))}
       </div>

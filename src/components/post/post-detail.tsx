@@ -60,10 +60,7 @@ export const PostDetail = ({
             </div>
 
             <StickyPostHeader title={post.title} onBack={() => router.back()} />
-            <h1
-              layoutId="post-title"
-              className="dark:text-foreground mb-4 text-2xl font-bold break-keep text-neutral-900 md:text-5xl"
-            >
+            <h1 className="dark:text-foreground mb-4 text-2xl font-bold break-keep text-neutral-900 md:text-5xl">
               {post.title}
             </h1>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useState } from "react";
+import { useEffect } from "react";
 
 type Theme = "light" | "dark";
 
@@ -27,6 +28,17 @@ export function ThemeProvider({
 }) {
   const [theme, setTheme] = useState<Theme>(initialTheme);
 
+  useEffect(() => {
+    const cookieTheme = document.cookie
+      .split("; ")
+      .find((cookie) => cookie.startsWith("theme="))
+      ?.split("=")[1];
+
+    const resolvedTheme = cookieTheme === "dark" ? "dark" : "light";
+    setTheme(resolvedTheme);
+    document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
+  }, []);
+
   const toggleTheme = useCallback(() => {
     setTheme((prev) => {
       const next = prev === "light" ? "dark" : "light";
@@ -36,7 +48,5 @@ export function ThemeProvider({
     });
   }, []);
 
-  return (
-    <ThemeContext value={{ theme, toggleTheme }}>{children}</ThemeContext>
-  );
+  return <ThemeContext value={{ theme, toggleTheme }}>{children}</ThemeContext>;
 }

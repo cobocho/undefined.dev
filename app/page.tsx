@@ -1,11 +1,21 @@
 import { groupBy } from "es-toolkit";
 import { ChevronRight } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { getAllPosts } from "@/apis/post";
 import { PostCard } from "@/components/post/post-card";
 import { PostItem } from "@/components/post/post-item";
 import { ScrollablePostList } from "@/components/post/scrollable-post-list";
+import { SITE_NAME } from "@/constants/site-metadata";
+
+export const metadata: Metadata = {
+  title: `${SITE_NAME}`,
+  description: "잡탕 기록장",
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default async function Home() {
   const posts = getAllPosts();

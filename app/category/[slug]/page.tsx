@@ -1,9 +1,11 @@
 import { ChevronLeft } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getCategories } from "@/apis/category";
 import { getPostsByCategory } from "@/apis/post";
+import { SITE_NAME } from "@/constants/site-metadata";
 
 import { CategoryPostItem } from "./_components/category-post-item";
 
@@ -11,9 +13,46 @@ interface CategoryPageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const dynamicParams = false;
+export const dynamic = "force-static";
+
 export function generateStaticParams() {
   const categories = getCategories();
   return categories.map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: CategoryPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const categories = getCategories();
+
+  if (!categories.includes(slug)) {
+    return {
+      description: `${slug} Category`,
+    };
+  }
+
+  const postCount = getPostsByCategory(slug).length;
+  const title = `${slug}`;
+  const description = `${slug} 카테고리의 게시물 수: ${postCount}개`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/category/${slug}`,
+    },
+    openGraph: {
+      title: `${title} | ${SITE_NAME}`,
+      description,
+      url: `/category/${slug}`,
+    },
+    twitter: {
+      title: `${title} | ${SITE_NAME}`,
+      description,
+    },
+  };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
