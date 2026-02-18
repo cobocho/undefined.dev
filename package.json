@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "docker:build": "docker build -t undefined-dev .",
+    "docker:run": "docker run -p 3000:3000 undefined-dev"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
