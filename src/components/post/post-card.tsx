@@ -69,7 +69,7 @@ export const PostCard = ({ post }: PostCardProps) => {
             className="flex items-center gap-1 rounded-[14px] border bg-white px-3 py-1.5 dark:bg-neutral-900"
           >
             <ScanText className="size-4" />
-            <span style={{ color: subTextColor }} className="text-sm">
+            <span className="text-sm text-neutral-500 dark:text-neutral-300">
               {post.minRead} min read
             </span>
           </Link>

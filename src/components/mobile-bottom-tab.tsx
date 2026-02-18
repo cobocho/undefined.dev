@@ -21,34 +21,34 @@ export function MobileBottomTab() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-neutral-200 bg-white/95 backdrop-blur-md dark:border-neutral-700 dark:bg-neutral-900/95 md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 px-4 pb-4 md:hidden"
       aria-label="Mobile bottom navigation"
     >
-      <div className="mx-auto grid h-16 max-w-3xl grid-cols-5 px-2 pb-[max(env(safe-area-inset-bottom),0.25rem)]">
-        <TabItem
-          href="/"
-          icon={<Home className="size-4" />}
-          isActive={pathname === "/"}
-        >
-          Home
-        </TabItem>
+      <div className="flex w-full justify-between rounded-[32px] border bg-white/60 px-4 py-5 shadow-lg backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/50">
         <TabItem
           href="/search"
-          icon={<FileSearchCorner className="size-4" />}
+          icon={<FileSearchCorner className="size-6" />}
           isActive={pathname === "/search"}
         >
           Search
         </TabItem>
         <TabItem
           href="/category"
-          icon={<Folder className="size-4" />}
+          icon={<Folder className="size-6" />}
           isActive={pathname.startsWith("/category")}
         >
           Category
         </TabItem>
         <TabItem
+          href="/"
+          icon={<Home className="size-6" />}
+          isActive={pathname === "/"}
+        >
+          Home
+        </TabItem>
+        <TabItem
           href="/about"
-          icon={<UserRoundSearch className="size-4" />}
+          icon={<UserRoundSearch className="size-6" />}
           isActive={pathname === "/about"}
         >
           About Me
@@ -58,11 +58,10 @@ export function MobileBottomTab() {
           className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-md text-[11px] font-semibold text-neutral-500 transition-colors duration-200 dark:text-neutral-400"
         >
           {theme === "dark" ? (
-            <Sun className="size-4" />
+            <Sun className="size-6" />
           ) : (
-            <Moon className="size-4" />
+            <Moon className="size-6" />
           )}
-          <span>Theme</span>
         </button>
       </div>
     </nav>
@@ -89,7 +88,6 @@ function TabItem({
       )}
     >
       {icon}
-      <span>{children}</span>
     </Link>
   );
 }

@@ -25,7 +25,7 @@ export const Sidebar = ({ categories }: SidebarProps) => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <div className="relative z-[9999] h-full w-full rounded-3xl border border-white/20 bg-linear-to-r from-white to-neutral-50/50 px-4 py-8 shadow-[5px_20px_30px_rgba(0,0,0,0.2)] shadow-[#f1f1f1] backdrop-blur-xs dark:border-white/10 dark:from-neutral-900 dark:to-neutral-800/50 dark:shadow-black/40">
+    <div className="border-neutral-1000 relative z-[9999] h-full w-full rounded-3xl border bg-linear-to-r from-white to-neutral-50/50 px-4 py-8 shadow-[5px_20px_30px_rgba(0,0,0,0.2)] shadow-[#f1f1f1] backdrop-blur-xs dark:border-neutral-700 dark:from-neutral-900 dark:to-neutral-800/50 dark:shadow-black/40">
       <div className="mb-8 flex items-center justify-between">
         <FakeButtons />
         <button
@@ -36,7 +36,7 @@ export const Sidebar = ({ categories }: SidebarProps) => {
           {theme === "dark" ? (
             <Sun className="size-4 text-neutral-400" />
           ) : (
-            <Moon className="size-4 text-white" />
+            <Moon className="size-4 text-neutral-400" />
           )}
         </button>
       </div>

@@ -5,6 +5,7 @@ import { ChevronLeft } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Post } from "@/interfaces/post";
 
@@ -25,6 +26,8 @@ export const PostDetail = ({
   nearbyPosts,
   currentSlug,
 }: PostDetailProps) => {
+  const router = useRouter();
+
   return (
     <div className="flex gap-10">
       <motion.div
@@ -34,13 +37,13 @@ export const PostDetail = ({
       >
         <article className="w-full max-w-[1200px]">
           <div className="max-w-full">
-            <Link
-              href={`/category/${post.category}`}
+            <button
+              onClick={() => router.back()}
               className="mb-6 inline-flex items-center gap-1 text-sm text-neutral-500 transition-colors hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
             >
               <ChevronLeft className="size-4" />
               뒤로가기
-            </Link>
+            </button>
 
             <div className="mb-4 flex items-center gap-3">
               <Link
@@ -54,7 +57,7 @@ export const PostDetail = ({
               </span>
             </div>
 
-            <h1 className="dark:text-foreground mb-4 text-5xl font-bold text-neutral-900">
+            <h1 className="dark:text-foreground mb-4 text-2xl font-bold break-keep text-neutral-900 md:text-5xl">
               {post.title}
             </h1>
 
