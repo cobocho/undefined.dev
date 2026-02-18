@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { getCategories } from "@/apis/category";
+import { getAllTags } from "@/apis/tag";
 import { ScrollRestoration } from "@/components/scroll-restoration";
 import { Sidebar } from "@/components/sidebar";
 
@@ -28,6 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const categories = getCategories();
+  const tags = getAllTags();
 
   return (
     <html lang="en">
@@ -36,7 +38,7 @@ export default function RootLayout({
       >
         <div className="flex h-screen overflow-y-hidden">
           <div className="fixed top-0 left-0 z-50 h-screen w-80 p-4">
-            <Sidebar categories={categories} />
+            <Sidebar categories={categories} tags={tags} />
           </div>
           <div
             id="content-wrapper"

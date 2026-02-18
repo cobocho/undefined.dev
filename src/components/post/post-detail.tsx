@@ -63,6 +63,18 @@ export const PostDetail = ({
               {post.description}
             </p>
 
+            {post.tags.length > 0 && (
+              <ul className="mb-8 flex flex-wrap gap-2" aria-label="태그 목록">
+                {post.tags.map((tag) => (
+                  <li key={tag}>
+                    <span className="inline-flex items-center rounded-md bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-700">
+                      #{tag}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
             <div className="relative mb-10 aspect-video w-full overflow-hidden rounded-xl">
               <Image
                 src={post.thumbnail}
