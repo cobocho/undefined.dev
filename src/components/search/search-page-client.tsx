@@ -45,7 +45,7 @@ function highlightText(text: string, query: string, className?: string) {
       <mark
         key={key}
         className={cn(
-          "rounded-sm bg-amber-200/80 px-0.5 text-inherit",
+          "rounded-sm bg-amber-200/80 px-0.5 text-inherit dark:bg-amber-500/30",
           className,
         )}
       >
@@ -148,7 +148,7 @@ export function SearchPageClient() {
         <label htmlFor="search-input" className="sr-only">
           검색어
         </label>
-        <div className="focus-within:border-primary focus-within:ring-primary/20 flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-3 transition-all duration-200 focus-within:ring-4">
+        <div className="focus-within:border-primary focus-within:ring-primary/20 flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-4 py-3 transition-all duration-200 focus-within:ring-4 dark:border-neutral-700 dark:bg-neutral-900">
           <Search className="size-5 text-neutral-400" />
           <input
             id="search-input"
@@ -160,14 +160,14 @@ export function SearchPageClient() {
       </div>
 
       <output
-        className="mb-4 block text-sm text-neutral-500"
+        className="mb-4 block text-sm text-neutral-500 dark:text-neutral-400"
         aria-live="polite"
       >
         {query.trim() && `${total}개의 검색 결과`}
       </output>
 
       {error && (
-        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-400">
           {error}
         </div>
       )}
@@ -187,9 +187,9 @@ export function SearchPageClient() {
             transition={{ delay: index * 0.03 }}
             key={result.id}
             href={`/post/${result.category}/${result.slug}`}
-            className="group rounded-xl border border-neutral-100 bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-neutral-200 hover:shadow-md"
+            className="group rounded-xl border border-neutral-100 bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-neutral-200 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700"
           >
-            <div className="mb-1 flex items-center gap-2 text-xs text-neutral-500">
+            <div className="mb-1 flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
               <span className="capitalize">{result.category}</span>
               <span>·</span>
               <span>{dayjs(result.date).format("YYYY년 MM월 DD일")}</span>
@@ -197,11 +197,11 @@ export function SearchPageClient() {
               <span>{result.minRead} min read</span>
             </div>
 
-            <h2 className="mb-2 text-lg font-semibold text-neutral-800 group-hover:text-neutral-950">
+            <h2 className="mb-2 text-lg font-semibold text-neutral-800 group-hover:text-neutral-950 dark:text-neutral-200 dark:group-hover:text-neutral-50">
               {highlightText(result.title, query)}
             </h2>
 
-            <p className="mb-3 line-clamp-2 text-sm text-neutral-600">
+            <p className="mb-3 line-clamp-2 text-sm text-neutral-600 dark:text-neutral-300">
               {highlightText(result.snippet, query)}
             </p>
 
@@ -209,7 +209,7 @@ export function SearchPageClient() {
               {result.tags.map((tag) => (
                 <span
                   key={`${result.id}-${tag}`}
-                  className="rounded-md bg-neutral-100 px-2 py-1 text-xs text-neutral-600"
+                  className="rounded-md bg-neutral-100 px-2 py-1 text-xs text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400"
                 >
                   #{highlightText(tag, query)}
                 </span>

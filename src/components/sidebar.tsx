@@ -1,10 +1,19 @@
 "use client";
 
-import { FileSearchCorner, Folder, Home, UserRoundSearch } from "lucide-react";
+import {
+  FileSearchCorner,
+  Folder,
+  Home,
+  Moon,
+  Sun,
+  UserRoundSearch,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
+
+import { useTheme } from "./theme-provider";
 
 interface SidebarProps {
   categories: string[];
@@ -13,10 +22,24 @@ interface SidebarProps {
 export const Sidebar = ({ categories }: SidebarProps) => {
   const pathname = usePathname();
   const currentCategory = pathname.split("/")[2];
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <div className="relative z-[9999] h-full w-full rounded-3xl border border-white/20 bg-linear-to-r from-white to-neutral-50/50 px-4 py-8 shadow-[5px_20px_30px_rgba(0,0,0,0.2)] shadow-[#f1f1f1] backdrop-blur-xs">
-      <FakeButtons />
+    <div className="relative z-[9999] h-full w-full rounded-3xl border border-white/20 bg-linear-to-r from-white to-neutral-50/50 px-4 py-8 shadow-[5px_20px_30px_rgba(0,0,0,0.2)] shadow-[#f1f1f1] backdrop-blur-xs dark:border-white/10 dark:from-neutral-900 dark:to-neutral-800/50 dark:shadow-black/40">
+      <div className="mb-8 flex items-center justify-between">
+        <FakeButtons />
+        <button
+          onClick={toggleTheme}
+          className="flex size-8 cursor-pointer items-center justify-center rounded-lg transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-700"
+          aria-label="Toggle theme"
+        >
+          {theme === "dark" ? (
+            <Sun className="size-4 text-neutral-400" />
+          ) : (
+            <Moon className="size-4 text-white" />
+          )}
+        </button>
+      </div>
       <div className="mb-8 flex flex-col gap-1">
         <Link href="/">
           <MenuItem
@@ -80,7 +103,7 @@ export const Sidebar = ({ categories }: SidebarProps) => {
 
 function MenuTitle({ children }: { children: React.ReactNode }) {
   return (
-    <span className="mb-3 block text-sm font-extrabold text-neutral-400 uppercase">
+    <span className="mb-3 block text-sm font-extrabold text-neutral-400 uppercase dark:text-neutral-400">
       {children}
     </span>
   );
@@ -105,13 +128,16 @@ function MenuItem({
       {icon || (
         <Folder
           className={cn(
-            "size-5 fill-neutral-500 text-neutral-500",
-            isActive && "fill-none text-white",
+            "size-5 fill-neutral-500 text-white dark:fill-neutral-400 dark:text-neutral-400",
+            isActive && "fill-none text-white dark:fill-none dark:text-white",
           )}
         />
       )}
       <span
-        className={cn("text-neutral-700 capitalize", isActive && "text-white")}
+        className={cn(
+          "text-neutral-700 capitalize dark:text-neutral-300",
+          isActive && "text-white dark:text-white",
+        )}
       >
         {children}
       </span>
@@ -121,7 +147,7 @@ function MenuItem({
 
 function FakeButtons() {
   return (
-    <div className="mb-8 flex items-center gap-2">
+    <div className="flex items-center gap-2">
       <div className="h-4 w-4 rounded-full bg-red-400"></div>
       <div className="h-4 w-4 rounded-full bg-yellow-400"></div>
       <div className="h-4 w-4 rounded-full bg-green-400"></div>

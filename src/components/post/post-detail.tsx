@@ -36,7 +36,7 @@ export const PostDetail = ({
           <div className="max-w-full">
             <Link
               href={`/category/${post.category}`}
-              className="mb-6 inline-flex items-center gap-1 text-sm text-neutral-500 transition-colors hover:text-neutral-800"
+              className="mb-6 inline-flex items-center gap-1 text-sm text-neutral-500 transition-colors hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
             >
               <ChevronLeft className="size-4" />
               뒤로가기
@@ -45,20 +45,20 @@ export const PostDetail = ({
             <div className="mb-4 flex items-center gap-3">
               <Link
                 href={`/category/${post.category}`}
-                className="rounded-md bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-600 capitalize"
+                className="rounded-md bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-600 capitalize dark:bg-blue-500/10 dark:text-blue-400"
               >
                 {post.category}
               </Link>
-              <span className="text-sm text-neutral-400">
+              <span className="text-sm text-neutral-400 dark:text-neutral-300">
                 {dayjs(post.date).format("YYYY년 MM월 DD일")}
               </span>
             </div>
 
-            <h1 className="mb-4 text-5xl font-bold text-neutral-900">
+            <h1 className="dark:text-foreground mb-4 text-5xl font-bold text-neutral-900">
               {post.title}
             </h1>
 
-            <p className="mb-8 text-base text-neutral-500">
+            <p className="mb-8 text-base text-neutral-500 dark:text-neutral-300">
               {post.description}
             </p>
 
@@ -66,7 +66,7 @@ export const PostDetail = ({
               <ul className="mb-8 flex flex-wrap gap-2" aria-label="태그 목록">
                 {post.tags.map((tag) => (
                   <li key={tag}>
-                    <span className="inline-flex items-center rounded-md bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-700">
+                    <span className="inline-flex items-center rounded-md bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
                       #{tag}
                     </span>
                   </li>
@@ -93,9 +93,9 @@ export const PostDetail = ({
 
             {nearbyPosts && nearbyPosts.length > 1 && (
               <div>
-                <h2 className="mb-4 text-xl font-bold capitalize">
+                <span className="mb-4 text-xl font-bold capitalize">
                   {post.category}의 다른 글
-                </h2>
+                </span>
                 <ScrollablePostList>
                   {nearbyPosts.map((p) => (
                     <Link href={`/post/${p.category}/${p.slug}`} key={p.slug}>
@@ -121,7 +121,7 @@ export const PostDetail = ({
       </motion.div>
 
       <motion.div
-        className="relative z-50 hidden w-[280px] shrink-0 border-l bg-white/90 p-6 backdrop-blur-md min-[1600px]:block"
+        className="relative z-50 hidden w-[280px] shrink-0 border-l bg-white/90 p-6 backdrop-blur-md min-[1600px]:block dark:border-neutral-700 dark:bg-neutral-900/90"
         initial={{ opacity: 0, x: 40 }}
         animate={{ opacity: 1, x: 0 }}
       >

@@ -21,9 +21,9 @@ export const PostItem = ({ post }: PostItemProps) => {
           placeholder="blur"
         />
       </div>
-      <h3 className="mb-2 block text-sm font-semibold text-neutral-600 group-hover:text-neutral-900">
+      <span className="mb-2 block text-sm font-semibold text-neutral-600 group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-neutral-50">
         {post.title}
-      </h3>
+      </span>
       <div className="flex w-full items-center justify-between">
         <span className="text-muted-foreground block text-xs">
           {dayjs(post.date).format("YYYY년 MM월 DD일")}

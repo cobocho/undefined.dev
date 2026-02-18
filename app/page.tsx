@@ -42,7 +42,7 @@ export default async function Home() {
           >
             <div className="mb-4 flex w-fit items-center justify-between gap-1">
               <h2 className="text-xl font-bold capitalize">{category}</h2>
-              <ChevronRight className="size-5 text-neutral-500" />
+              <ChevronRight className="size-5 text-neutral-500 dark:text-neutral-400" />
             </div>
           </Link>
           <ScrollablePostList>

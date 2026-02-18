@@ -314,7 +314,7 @@ export const ScrollablePostList = ({ children }: ScrollablePostListProps) => {
   }, [clamp]);
 
   return (
-    <div className="group relative" role="presentation">
+    <div className="relative" role="presentation">
       {canScrollLeft && <ScrollButton direction="left" onClick={scrollLeft} />}
       {canScrollRight && (
         <ScrollButton direction="right" onClick={scrollRight} />
@@ -352,13 +352,13 @@ function ScrollButton({
   return (
     <button
       type="button"
-      className={`absolute top-1/2 z-10 flex h-16 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/70 opacity-0 shadow-md backdrop-blur-sm transition-opacity duration-200 group-hover:pointer-events-auto group-hover:opacity-100 hover:bg-neutral-50 ${
+      className={`absolute top-1/2 z-10 flex h-16 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/70 opacity-0 shadow-md backdrop-blur-sm transition-opacity duration-200 dark:bg-neutral-800/70 ${
         isLeft ? "left-4 -translate-x-1/2" : "right-4 translate-x-1/2"
       }`}
       style={{ pointerEvents: "none" }}
       onClick={onClick}
     >
-      <Icon className="size-4 text-neutral-600" />
+      <Icon className="size-4 text-neutral-600 dark:text-neutral-300" />
     </button>
   );
 }

@@ -29,15 +29,15 @@ export default function CategoryIndexPage() {
           <Link
             href={`/category/${category}`}
             key={category}
-            className="group flex items-center justify-between rounded-xl border border-neutral-200 bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md"
+            className="group flex items-center justify-between rounded-xl border border-neutral-200 bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-neutral-600"
           >
             <div className="flex items-center gap-2">
               <Hash className="size-4 text-neutral-400 group-hover:text-blue-500" />
-              <span className="font-semibold text-neutral-800 capitalize group-hover:text-neutral-950">
+              <span className="font-semibold text-neutral-800 capitalize group-hover:text-neutral-950 dark:text-neutral-200 dark:group-hover:text-neutral-50">
                 {category}
               </span>
             </div>
-            <span className="text-sm text-neutral-500">{count} posts</span>
+            <span className="text-sm text-neutral-500 dark:text-neutral-400">{count} posts</span>
           </Link>
         ))}
       </div>

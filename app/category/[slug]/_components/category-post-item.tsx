@@ -15,7 +15,7 @@ export function CategoryPostItem({
 }) {
   return (
     <motion.div
-      className="group flex cursor-pointer flex-col gap-3 rounded-xl p-3 transition-all duration-200 hover:bg-neutral-50 sm:flex-row sm:gap-5"
+      className="group flex cursor-pointer flex-col gap-3 rounded-xl p-3 transition-all duration-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 sm:flex-row sm:gap-5"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay }}
@@ -32,7 +32,7 @@ export function CategoryPostItem({
       </div>
       <div className="flex flex-1 flex-col justify-between py-1">
         <div>
-          <h3 className="mb-1 line-clamp-2 text-sm font-semibold text-neutral-800 group-hover:text-neutral-950 sm:text-base">
+          <h3 className="mb-1 line-clamp-2 text-sm font-semibold text-neutral-800 group-hover:text-neutral-950 dark:text-neutral-200 dark:group-hover:text-neutral-50 sm:text-base">
             {post.title}
           </h3>
           <p className="text-muted-foreground line-clamp-2 text-sm">

@@ -13,7 +13,7 @@ export default function AboutPage() {
       <h1 className="mb-20 text-3xl font-bold">소개</h1>
       <div className="mb-4 flex items-end gap-2">
         <span className="text-4xl font-bold">김민규</span>
-        <span className="text-xl text-neutral-500">Frontend Developer</span>
+        <span className="text-xl text-neutral-500 dark:text-neutral-300">Frontend Developer</span>
       </div>
       <div className="mb-4">
         <span>
@@ -30,13 +30,13 @@ export default function AboutPage() {
           </button>
         </a>
         <a href="https://github.com/cobocho" target="_blank">
-          <button className="flex cursor-pointer items-center gap-2 rounded-md border bg-black px-4 py-2 text-sm text-white">
+          <button className="flex cursor-pointer items-center gap-2 rounded-md border bg-black px-4 py-2 text-sm text-white dark:bg-neutral-800">
             <Github className="size-4" />
             Github
           </button>
         </a>
         <a href="mailto:contact@un-defined.dev">
-          <button className="flex cursor-pointer items-center gap-2 rounded-md border border-neutral-200 px-4 py-2 text-sm text-neutral-500">
+          <button className="flex cursor-pointer items-center gap-2 rounded-md border border-neutral-200 px-4 py-2 text-sm text-neutral-500 dark:border-neutral-600 dark:text-neutral-300">
             <Mail className="size-4" />
             Mail
           </button>

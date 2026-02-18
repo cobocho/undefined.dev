@@ -31,28 +31,28 @@ export const MarkdownRenderer = ({
       h1: (props) => (
         <h1
           {...props}
-          className="pt-16 pb-4 text-3xl font-extrabold text-neutral-900"
+          className="pt-16 pb-4 text-3xl font-extrabold text-neutral-900 dark:text-neutral-100"
           id={toSlug(props.children)}
         />
       ),
       h2: (props) => (
         <h2
           {...props}
-          className="border-b border-neutral-200 pt-14 pb-3 text-2xl font-bold text-neutral-900"
+          className="border-b border-neutral-200 pt-14 pb-3 text-2xl font-bold text-neutral-900 dark:border-neutral-700 dark:text-neutral-100"
           id={toSlug(props.children)}
         />
       ),
       h3: (props) => (
         <h3
           {...props}
-          className="pt-10 pb-2 text-xl font-bold text-neutral-800"
+          className="pt-10 pb-2 text-xl font-bold text-neutral-800 dark:text-neutral-200"
           id={toSlug(props.children)}
         />
       ),
       h4: (props) => (
         <h4
           {...props}
-          className="pt-8 pb-2 text-lg font-semibold text-neutral-800"
+          className="pt-8 pb-2 text-lg font-semibold text-neutral-800 dark:text-neutral-200"
           id={toSlug(props.children)}
         />
       ),
@@ -65,7 +65,7 @@ export const MarkdownRenderer = ({
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
+              className="text-blue-500 hover:underline dark:text-blue-400"
             >
               {children}
             </a>
@@ -73,7 +73,10 @@ export const MarkdownRenderer = ({
         }
 
         return (
-          <Link href={href} className="text-blue-500 hover:underline">
+          <Link
+            href={href}
+            className="text-blue-500 hover:underline dark:text-blue-400"
+          >
             {children}
           </Link>
         );
@@ -121,36 +124,46 @@ export const MarkdownRenderer = ({
         <em {...props} className="font-medium italic opacity-50" />
       ),
       strong: (props) => (
-        <strong {...props} className="font-bold text-neutral-900" />
+        <strong
+          {...props}
+          className="font-bold text-neutral-900 dark:text-neutral-100"
+        />
       ),
       table: (props) => (
-        <div className="my-4 overflow-hidden rounded-lg border border-neutral-200">
+        <div className="my-4 overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-700">
           <table {...props} className="w-full" />
         </div>
       ),
-      thead: (props) => <thead {...props} className="bg-neutral-100" />,
+      thead: (props) => (
+        <thead {...props} className="bg-neutral-100 dark:bg-neutral-800" />
+      ),
       th: (props) => (
         <th
           {...props}
-          className="border-b border-neutral-200 px-4 py-2 text-left font-semibold"
+          className="border-b border-neutral-200 px-4 py-2 text-left font-semibold dark:border-neutral-700"
         />
       ),
       td: (props) => (
-        <td {...props} className="border-b border-neutral-100 px-4 py-2" />
+        <td
+          {...props}
+          className="border-b border-neutral-100 px-4 py-2 dark:border-neutral-800"
+        />
       ),
       blockquote: (props) => (
         <blockquote
           {...props}
-          className="my-4 border-l-4 border-blue-400 py-1 pl-4 text-neutral-500 italic"
+          className="my-4 border-l-4 border-blue-400 py-1 pl-4 text-neutral-500 italic dark:border-blue-500 dark:text-neutral-300"
         />
       ),
-      hr: () => <hr className="my-10 border-neutral-200" />,
+      hr: () => (
+        <hr className="my-10 border-neutral-200 dark:border-neutral-700" />
+      ),
       code: (props) => {
         const match = /language-(\w+)/.exec(props.className ?? "");
 
         if (!match) {
           return (
-            <span className="mx-0.5 inline-block rounded-md bg-neutral-100 px-1.5 py-0.5 text-sm text-red-600">
+            <span className="mx-0.5 inline-block rounded-md bg-neutral-100 px-1.5 py-0.5 text-sm text-red-600 dark:bg-neutral-800 dark:text-red-400">
               {props.children}
             </span>
           );
