@@ -40,7 +40,7 @@ export default function RootLayout({
           </div>
           <div
             id="content-wrapper"
-            className="flex-1 overflow-x-hidden overflow-y-scroll px-4 pl-84"
+            className="flex-1 overflow-x-hidden overflow-y-scroll pl-84"
           >
             <ScrollRestoration />
             {children}

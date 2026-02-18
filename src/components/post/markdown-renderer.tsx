@@ -90,7 +90,7 @@ export const MarkdownRenderer = ({
         const isGif = image.src.includes("gif");
 
         return (
-          <figure className="my-6 flex w-full flex-col items-center gap-3">
+          <figure className="mx-auto my-6 flex w-full max-w-[600px] flex-col items-center gap-3">
             <Image
               src={image}
               width={image.width}

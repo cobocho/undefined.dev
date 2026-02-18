@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { getCategories } from "@/apis/category";
-import { getAllPosts, getPost } from "@/apis/post";
+import { getAllPosts, getPost, getPostsByCategory } from "@/apis/post";
 import { PostDetail } from "@/components/post/post-detail";
 
 interface PostPageProps {
@@ -25,6 +25,14 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   const post = getPost(category, slug, { withContent: true });
+  const categoryPosts = getPostsByCategory(category);
 
-  return <PostDetail post={post} />;
+  const currentIndex = categoryPosts.findIndex((p) => p.slug === slug);
+  const start = Math.max(0, currentIndex - 3);
+  const end = Math.min(categoryPosts.length, currentIndex + 4);
+  const nearbyPosts = categoryPosts.slice(start, end);
+
+  return (
+    <PostDetail post={post} nearbyPosts={nearbyPosts} currentSlug={slug} />
+  );
 }

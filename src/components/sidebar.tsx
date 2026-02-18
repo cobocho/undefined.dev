@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  FileSearchCorner,
-  Folder,
-  NotebookText,
-  UserRoundSearch,
-} from "lucide-react";
+import { FileSearchCorner, Folder, Home, UserRoundSearch } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -24,8 +19,18 @@ export const Sidebar = ({ categories }: SidebarProps) => {
       <FakeButtons />
       <div className="mb-8 flex flex-col gap-1">
         <Link href="/">
-          <MenuItem icon={<NotebookText className="size-5 text-blue-500" />}>
-            All Posts
+          <MenuItem
+            icon={
+              <Home
+                className={cn(
+                  "size-5 text-blue-500",
+                  pathname === "/" && "text-white",
+                )}
+              />
+            }
+            isActive={pathname === "/"}
+          >
+            Home
           </MenuItem>
         </Link>
         <Link href="/search">

@@ -5,14 +5,23 @@ import Link from "next/link";
 
 import { Post } from "@/interfaces/post";
 
+import { Giscus } from "./giscus";
 import { MarkdownRenderer } from "./markdown-renderer";
+import { PostItem } from "./post-item";
+import { ScrollablePostList } from "./scrollable-post-list";
 import { TableOfContents } from "./table-of-contents";
 
 interface PostDetailProps {
   post: Post;
+  nearbyPosts?: Omit<Post, "content">[];
+  currentSlug?: string;
 }
 
-export const PostDetail = ({ post }: PostDetailProps) => {
+export const PostDetail = ({
+  post,
+  nearbyPosts,
+  currentSlug,
+}: PostDetailProps) => {
   return (
     <div className="flex gap-10">
       <div className="flex w-full flex-1 justify-center py-10">
@@ -58,15 +67,45 @@ export const PostDetail = ({ post }: PostDetailProps) => {
             </div>
 
             <MarkdownRenderer content={post.content} images={post.images} />
+
+            <div className="my-20">
+              <Giscus />
+            </div>
+
+            {nearbyPosts && nearbyPosts.length > 1 && (
+              <div>
+                <h2 className="mb-4 text-xl font-bold capitalize">
+                  {post.category}의 다른 글
+                </h2>
+                <ScrollablePostList>
+                  {nearbyPosts.map((p) => (
+                    <Link href={`/post/${p.category}/${p.slug}`} key={p.slug}>
+                      <div
+                        data-current-post={
+                          p.slug === currentSlug ? "true" : undefined
+                        }
+                        className={
+                          p.slug === currentSlug
+                            ? "rounded-lg ring-2 ring-blue-500"
+                            : ""
+                        }
+                      >
+                        <PostItem post={p} />
+                      </div>
+                    </Link>
+                  ))}
+                </ScrollablePostList>
+              </div>
+            )}
           </div>
         </article>
       </div>
 
-      <aside className="hidden w-[280px] shrink-0 border-l p-6 min-[1600px]:block">
+      <div className="relative z-50 hidden w-[280px] shrink-0 border-l bg-white/90 p-6 backdrop-blur-md min-[1600px]:block">
         <div className="sticky top-10">
           <TableOfContents />
         </div>
-      </aside>
+      </div>
     </div>
   );
 };
