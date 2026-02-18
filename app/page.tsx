@@ -34,7 +34,7 @@ export default async function Home() {
           ))}
         </ScrollablePostList>
       </div>
-      {orderedByRecent.map(({ category, posts, hasMore }) => (
+      {orderedByRecent.map(({ category, posts }) => (
         <div key={category} className="mb-10">
           <Link
             href={`/category/${category}`}

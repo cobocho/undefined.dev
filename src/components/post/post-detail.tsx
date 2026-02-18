@@ -1,5 +1,8 @@
+"use client";
+
 import dayjs from "dayjs";
 import { ChevronLeft } from "lucide-react";
+import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -24,7 +27,12 @@ export const PostDetail = ({
 }: PostDetailProps) => {
   return (
     <div className="flex gap-10">
-      <div className="flex w-full flex-1 justify-center py-10">
+      <motion.div
+        className="flex w-full flex-1 justify-center py-10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <article className="w-full max-w-[1200px]">
           <div className="max-w-full">
             <Link
@@ -99,13 +107,18 @@ export const PostDetail = ({
             )}
           </div>
         </article>
-      </div>
+      </motion.div>
 
-      <div className="relative z-50 hidden w-[280px] shrink-0 border-l bg-white/90 p-6 backdrop-blur-md min-[1600px]:block">
+      <motion.div
+        className="relative z-50 hidden w-[280px] shrink-0 border-l bg-white/90 p-6 backdrop-blur-md min-[1600px]:block"
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="sticky top-10">
           <TableOfContents />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
