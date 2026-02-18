@@ -1,9 +1,54 @@
-import Image from "next/image";
+import { groupBy } from "es-toolkit";
+import { ChevronRight } from "lucide-react";
 
-export default function Home() {
+import { getAllPosts } from "@/apis/post";
+import { PostCard } from "@/components/post/post-card";
+import { PostItem } from "@/components/post/post-item";
+import { ScrollablePostList } from "@/components/post/scrollable-post-list";
+
+export default async function Home() {
+  const posts = getAllPosts();
+  const recentPosts = posts.slice(0, 5);
+  const groupedPosts = groupBy(posts, (post) => post.category);
+  const orderedByRecent = Object.entries(groupedPosts).map(
+    ([category, posts]) => ({
+      category,
+      posts: posts
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 10),
+      hasMore: posts.length > 5,
+    }),
+  );
+
   return (
-    <div className="bg-blue-500">
-      <Image src="/path/to/image.jpg" alt="Image" width={200} height={200} />
+    <div>
+      <h1 className="mb-6 text-3xl font-bold">홈</h1>
+      <div className="mb-12">
+        <h2 className="mb-4 text-xl font-bold">최근 게시물</h2>
+        <ScrollablePostList>
+          {recentPosts.map((post) => (
+            <PostCard key={post.slug} post={post} />
+          ))}
+        </ScrollablePostList>
+      </div>
+      {orderedByRecent.map(({ category, posts, hasMore }) => (
+        <div key={category} className="mb-10">
+          <div className="mb-4 flex w-fit items-center justify-between gap-1">
+            <h2 className="text-xl font-bold capitalize">{category}</h2>
+            <ChevronRight className="size-5 text-neutral-500" />
+          </div>
+          <ScrollablePostList>
+            {posts.map((post) => (
+              <PostItem key={post.slug} post={post} />
+            ))}
+            {hasMore && (
+              <div className="mt-4">
+                <span>More</span>
+              </div>
+            )}
+          </ScrollablePostList>
+        </div>
+      ))}
     </div>
   );
 }

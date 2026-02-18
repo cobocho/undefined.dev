@@ -3,6 +3,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import { getCategories } from "@/apis/category";
+import { Sidebar } from "@/components/sidebar";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,12 +26,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const categories = getCategories();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="flex h-screen overflow-y-hidden">
+          <div className="fixed top-0 left-0 z-50 h-screen w-80 p-4">
+            <Sidebar categories={categories} />
+          </div>
+          <div className="flex-1 overflow-x-hidden overflow-y-scroll px-4 py-10 pl-84">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );
