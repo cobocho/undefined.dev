@@ -1,1 +1,0 @@
-export { Giscus } from './Giscus'

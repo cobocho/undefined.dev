@@ -1,1 +1,0 @@
-export { AppearRight } from './AppearRight'

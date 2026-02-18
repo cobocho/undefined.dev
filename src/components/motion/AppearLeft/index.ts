@@ -1,1 +1,0 @@
-export { AppearLeft } from './AppearLeft'
