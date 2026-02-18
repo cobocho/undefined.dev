@@ -13,6 +13,7 @@ import { Giscus } from "./giscus";
 import { MarkdownRenderer } from "./markdown-renderer";
 import { PostItem } from "./post-item";
 import { ScrollablePostList } from "./scrollable-post-list";
+import { StickyPostHeader } from "./sticky-post-header";
 import { TableOfContents } from "./table-of-contents";
 
 interface PostDetailProps {
@@ -34,6 +35,7 @@ export const PostDetail = ({
         className="flex w-full flex-1 justify-center py-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
       >
         <article className="w-full max-w-[1200px]">
           <div className="max-w-full">
@@ -57,7 +59,11 @@ export const PostDetail = ({
               </span>
             </div>
 
-            <h1 className="dark:text-foreground mb-4 text-2xl font-bold break-keep text-neutral-900 md:text-5xl">
+            <StickyPostHeader title={post.title} onBack={() => router.back()} />
+            <h1
+              layoutId="post-title"
+              className="dark:text-foreground mb-4 text-2xl font-bold break-keep text-neutral-900 md:text-5xl"
+            >
               {post.title}
             </h1>
 
