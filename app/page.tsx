@@ -1,5 +1,6 @@
 import { groupBy } from "es-toolkit";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 import { getAllPosts } from "@/apis/post";
 import { PostCard } from "@/components/post/post-card";
@@ -27,19 +28,31 @@ export default async function Home() {
         <h2 className="mb-4 text-xl font-bold">최근 게시물</h2>
         <ScrollablePostList>
           {recentPosts.map((post) => (
-            <PostCard key={post.slug} post={post} />
+            <Link href={`/post/${post.category}/${post.slug}`} key={post.slug}>
+              <PostCard post={post} />
+            </Link>
           ))}
         </ScrollablePostList>
       </div>
       {orderedByRecent.map(({ category, posts, hasMore }) => (
         <div key={category} className="mb-10">
-          <div className="mb-4 flex w-fit items-center justify-between gap-1">
-            <h2 className="text-xl font-bold capitalize">{category}</h2>
-            <ChevronRight className="size-5 text-neutral-500" />
-          </div>
+          <Link
+            href={`/category/${category}`}
+            className="transition-all duration-300 hover:scale-105"
+          >
+            <div className="mb-4 flex w-fit items-center justify-between gap-1">
+              <h2 className="text-xl font-bold capitalize">{category}</h2>
+              <ChevronRight className="size-5 text-neutral-500" />
+            </div>
+          </Link>
           <ScrollablePostList>
             {posts.map((post) => (
-              <PostItem key={post.slug} post={post} />
+              <Link
+                href={`/post/${post.category}/${post.slug}`}
+                key={post.slug}
+              >
+                <PostItem post={post} />
+              </Link>
             ))}
             {hasMore && (
               <div className="mt-4">

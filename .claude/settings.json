@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx bun add:*)",
+      "Bash(yarn add:*)"
+    ],
+    "additionalDirectories": [
+      "/Users/gimmingyu/Desktop/cobocho.dev/app/post/[category]"
+    ]
+  }
+}

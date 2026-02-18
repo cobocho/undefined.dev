@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
+import { ScanText } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { Post } from "@/interfaces/post";
 import { getAverageColor } from "@/lib/image";
@@ -62,9 +64,15 @@ export const PostCard = ({ post }: PostCardProps) => {
           </h3>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs opacity-60" style={{ color: subTextColor }}>
-            {post.minRead} min read
-          </span>
+          <Link
+            href={`/post/${post.category}/${post.slug}`}
+            className="flex items-center gap-1 rounded-[14px] border bg-white px-3 py-1.5"
+          >
+            <ScanText className="size-4" />
+            <span style={{ color: subTextColor }} className="text-sm">
+              {post.minRead} min read
+            </span>
+          </Link>
         </div>
       </div>
     </div>

@@ -90,6 +90,13 @@ export function getPost(
 
   return postData;
 }
+export const getPostsByCategory = (category: string) => {
+  const slugs = fs.readdirSync(join(POST_DIRECTORY, category));
+  return slugs
+    .map((slug) => getPost(category, slug, { withContent: false }))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+};
+
 export const getAllPosts = () => {
   const categories = getCategories();
 
