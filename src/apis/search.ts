@@ -179,6 +179,23 @@ function getSnippet(body: string, query: string) {
   return `${prefix}${body.slice(start, end).trim()}${suffix}`;
 }
 
+function hasTokenMatch(document: SearchDocument, query: string) {
+  const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+
+  if (tokens.length === 0) {
+    return false;
+  }
+
+  const title = document.title.toLowerCase();
+  const tags = document.tags.join(" ").toLowerCase();
+  const body = document.body.toLowerCase();
+
+  return tokens.some(
+    (token) =>
+      title.includes(token) || tags.includes(token) || body.includes(token),
+  );
+}
+
 export function searchPosts(query: string, limit: number): SearchResult[] {
   const trimmedQuery = query.trim();
 
@@ -189,7 +206,7 @@ export function searchPosts(query: string, limit: number): SearchResult[] {
   const { index } = getSearchIndexStore();
   const buckets = index.search(trimmedQuery, {
     enrich: true,
-    suggest: true,
+    suggest: false,
     limit,
     field: ["title", "tags", "body"],
   }) as SearchBucket[];
@@ -237,6 +254,7 @@ export function searchPosts(query: string, limit: number): SearchResult[] {
 
       return b.score - a.score;
     })
+    .filter(({ doc }) => hasTokenMatch(doc, trimmedQuery))
     .slice(0, limit)
     .map(({ doc, matchedFields }) => ({
       id: doc.id,
