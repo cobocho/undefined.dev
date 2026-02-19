@@ -17,8 +17,6 @@ export function StickyPostHeader({ title, onBack }: StickyPostHeaderProps) {
   );
   const sentinelRef = useRef<HTMLDivElement>(null);
 
-  console.log(progress);
-
   const getScrollWrapper = useCallback(() => {
     return document.getElementById("content-wrapper");
   }, []);
