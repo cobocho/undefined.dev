@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { Post } from "@/interfaces/post";
 
@@ -28,6 +29,16 @@ export const PostDetail = ({
   currentSlug,
 }: PostDetailProps) => {
   const router = useRouter();
+
+  useEffect(() => {
+    fetch(`/api/view`, {
+      method: "POST",
+      body: JSON.stringify({
+        category: post.category,
+        slug: post.slug,
+      }),
+    });
+  }, []);
 
   return (
     <div className="flex gap-10">

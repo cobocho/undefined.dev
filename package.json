@@ -13,6 +13,7 @@
     "docker:run": "docker run -p 3000:3000 undefined-dev"
   },
   "dependencies": {
+    "@next/third-parties": "^16.1.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.19",

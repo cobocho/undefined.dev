@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -74,6 +75,7 @@ export default async function RootLayout({
             <MobileBottomTab />
           </div>
         </ThemeProvider>
+        <GoogleAnalytics gaId={"G-HT07LQYBG3"} />
       </body>
     </html>
   );
