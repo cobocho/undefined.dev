@@ -44,6 +44,8 @@ export function ThemeProvider({
       const next = prev === "light" ? "dark" : "light";
       document.cookie = `theme=${next};path=/;max-age=31536000;SameSite=Lax`;
       document.documentElement.classList.toggle("dark", next === "dark");
+      document.documentElement.style.backgroundColor =
+        next === "dark" ? "oklch(0.145 0 0)" : "";
       return next;
     });
   }, []);
