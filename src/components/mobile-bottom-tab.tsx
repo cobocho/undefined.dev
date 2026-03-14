@@ -190,16 +190,18 @@ export function MobileBottomTab() {
       >
         {/* Outer glass container */}
         <div
-          className="relative mx-auto flex w-fit items-center rounded-[28px] border border-white/15 bg-white/10 p-1.5 backdrop-blur-xl dark:border-white/8 dark:bg-white/4"
+          className="relative mx-auto flex w-fit items-center overflow-hidden rounded-[28px] border border-white/50 bg-white/60 p-1.5 backdrop-blur-xl dark:border-white/12 dark:bg-white/10"
           style={{
             backdropFilter: "blur(20px) contrast(80%) saturate(120%)",
             WebkitBackdropFilter: "blur(20px) contrast(80%) saturate(120%)",
             boxShadow: `
-              0 8px 32px rgba(0,0,0,0.06),
-              inset 8px 8px 16px rgba(153,192,255,0.08),
-              inset 2px 2px 4px rgba(195,218,255,0.12),
-              inset -8px -8px 16px rgba(229,253,190,0.06),
-              inset -2px -2px 4px rgba(247,255,226,0.1)
+              0 2px 8px rgba(0,0,0,0.06),
+              0 8px 32px rgba(0,0,0,0.04),
+              inset 10px 10px 20px rgba(153,192,255,0.1),
+              inset 2px 2px 5px rgba(195,218,255,0.15),
+              inset -10px -10px 20px rgba(229,253,190,0.08),
+              inset -2px -2px 5px rgba(247,255,226,0.12),
+              inset 0 1px 0 rgba(255,255,255,0.7)
             `,
             WebkitUserSelect: "none",
             userSelect: "none",
@@ -288,13 +290,21 @@ export function MobileBottomTab() {
         {/* Theme toggle — separate glass button */}
         <button
           onClick={toggleTheme}
-          className="ml-1.5 flex items-center justify-center rounded-[28px] border border-white/10 bg-white/5 text-neutral-500 dark:border-white/5 dark:bg-white/[0.02] dark:text-neutral-400"
+          className="ml-1.5 flex items-center justify-center overflow-hidden rounded-[28px] border border-white/50 bg-white/60 text-neutral-500 backdrop-blur-xl dark:border-white/12 dark:bg-white/10 dark:text-neutral-400"
           style={{
             width: 62,
             height: 60,
-            backdropFilter: "blur(24px) saturate(130%)",
-            WebkitBackdropFilter: "blur(24px) saturate(130%)",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.04)",
+            backdropFilter: "blur(20px) contrast(80%) saturate(120%)",
+            WebkitBackdropFilter: "blur(20px) contrast(80%) saturate(120%)",
+            boxShadow: `
+              0 2px 8px rgba(0,0,0,0.06),
+              0 8px 32px rgba(0,0,0,0.04),
+              inset 10px 10px 20px rgba(153,192,255,0.1),
+              inset 2px 2px 5px rgba(195,218,255,0.15),
+              inset -10px -10px 20px rgba(229,253,190,0.08),
+              inset -2px -2px 5px rgba(247,255,226,0.12),
+              inset 0 1px 0 rgba(255,255,255,0.7)
+            `,
           }}
         >
           {theme === "dark" ? (
