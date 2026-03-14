@@ -61,13 +61,13 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider initialTheme="light">
-          <div className="flex overflow-y-hidden">
+          <div className="flex h-screen overflow-y-hidden">
             <div className="fixed top-0 left-0 z-50 hidden h-screen w-80 p-4 md:block">
               <Sidebar categories={categories} />
             </div>
             <div
               id="content-wrapper"
-              className="flex-1 overflow-x-hidden px-4 pb-24 md:pb-0 md:pl-84 lg:pr-0"
+              className="flex-1 overflow-x-hidden overflow-y-auto px-4 pb-24 md:pb-0 md:pl-84 lg:pr-0"
             >
               <ScrollRestoration />
               {children}

@@ -78,6 +78,22 @@ export const TableOfContents = () => {
           <li key={id} style={{ paddingLeft: `${(level - 1) * 12}px` }}>
             <a
               href={`#${id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                const target = document.getElementById(id);
+                if (target) {
+                  const wrapper = document.getElementById("content-wrapper");
+                  if (wrapper) {
+                    const wrapperRect = wrapper.getBoundingClientRect();
+                    const targetRect = target.getBoundingClientRect();
+                    wrapper.scrollTo({
+                      top: wrapper.scrollTop + targetRect.top - wrapperRect.top - 40,
+                      behavior: "smooth",
+                    });
+                  }
+                }
+                window.history.pushState(null, "", `#${id}`);
+              }}
               className="relative block text-sm leading-snug transition-all duration-200"
             >
               {text}
