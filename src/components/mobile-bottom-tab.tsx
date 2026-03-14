@@ -142,10 +142,10 @@ export function MobileBottomTab() {
     (e: React.TouchEvent) => {
       isDragging.current = true;
       dragStartX.current = e.touches[0].clientX;
-      dragStartIndex.current = activeIndex;
+      dragStartIndex.current = indicatorX.get() / TAB_STEP;
       indicatorScale.set(1.15);
     },
-    [activeIndex, indicatorScale],
+    [indicatorX, indicatorScale],
   );
 
   const handleTouchMove = useCallback(
