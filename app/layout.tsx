@@ -57,7 +57,14 @@ export default async function RootLayout({
   const categories = getCategories();
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var c=document.cookie.match(/(?:^|; )theme=([^;]*)/);if(c&&c[1]==='dark'){var d=document.documentElement;d.classList.add('dark');d.style.backgroundColor='oklch(0.145 0 0)'}}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
