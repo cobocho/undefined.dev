@@ -31,6 +31,13 @@ export const PostDetail = ({
   const router = useRouter();
 
   useEffect(() => {
+    if (
+      typeof window === "undefined" ||
+      process.env.NODE_ENV === "development"
+    ) {
+      return;
+    }
+
     fetch(`/api/view`, {
       method: "POST",
       body: JSON.stringify({
