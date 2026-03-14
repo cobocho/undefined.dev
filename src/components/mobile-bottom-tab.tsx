@@ -11,10 +11,9 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "motion/react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { cn } from "@/lib/utils";
 
 import { useTheme } from "./theme-provider";
 
@@ -41,7 +40,6 @@ const TAB_STEP = TAB_WIDTH + TAB_GAP;
 
 export function MobileBottomTab() {
   const pathname = usePathname();
-  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
 
   const enableHideByScroll = useMemo(() => {
@@ -175,9 +173,15 @@ export function MobileBottomTab() {
     indicatorX.set(clampedIndex * TAB_STEP);
 
     if (clampedIndex !== activeIndex) {
-      router.push(tabs[clampedIndex].href);
+      // Simulate anchor click so PageTransition intercepts it
+      const a = document.createElement("a");
+      a.href = tabs[clampedIndex].href;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     }
-  }, [activeIndex, indicatorX, indicatorScale, router]);
+  }, [activeIndex, indicatorX, indicatorScale]);
 
   return (
     <AnimatePresence>
@@ -268,13 +272,9 @@ export function MobileBottomTab() {
                   className="flex items-center justify-center rounded-[22px] text-neutral-900 select-none dark:text-white"
                   draggable={false}
                   style={{ width: TAB_WIDTH, height: 48, WebkitTouchCallout: "none" }}
-                  onTouchStart={() => {
+                  onTouchStart={(e) => {
+                    e.stopPropagation();
                     indicatorX.set(i * TAB_STEP);
-                  }}
-                  onClick={(e) => {
-                    if (isDragging.current) {
-                      e.preventDefault();
-                    }
                   }}
                 >
                   <motion.div style={{ scale: tabScales[i], opacity: tabOpacities[i] }}>

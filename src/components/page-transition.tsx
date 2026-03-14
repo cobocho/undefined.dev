@@ -99,7 +99,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
       e.stopPropagation();
 
       isAnimating.current = true;
-      animateOut();
+      await animateOut();
       router.push(href);
     };
 
@@ -109,19 +109,19 @@ export function PageTransition({ children }: { children: ReactNode }) {
 
   // --- Transition Router ---
   const transitionPush = useCallback(
-    (href: string) => {
+    async (href: string) => {
       if (isAnimating.current) return;
       isAnimating.current = true;
-      animateOut();
+      await animateOut();
       router.push(href);
     },
     [router, animateOut],
   );
 
-  const transitionBack = useCallback(() => {
+  const transitionBack = useCallback(async () => {
     if (isAnimating.current) return;
     isAnimating.current = true;
-    animateOut();
+    await animateOut();
     router.back();
   }, [router, animateOut]);
 
