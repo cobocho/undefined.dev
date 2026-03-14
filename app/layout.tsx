@@ -6,6 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import { getCategories } from "@/apis/category";
 import { MobileBottomTab } from "@/components/mobile-bottom-tab";
+import { PageTransition } from "@/components/page-transition";
 import { ScrollRestoration } from "@/components/scroll-restoration";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -70,7 +71,7 @@ export default async function RootLayout({
               className="flex-1 overflow-x-hidden overflow-y-auto px-4 pb-24 md:pb-0 md:pl-84 lg:pr-0"
             >
               <ScrollRestoration />
-              {children}
+              <PageTransition>{children}</PageTransition>
             </div>
             <MobileBottomTab />
           </div>

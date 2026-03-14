@@ -5,9 +5,9 @@ import { ChevronLeft } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+import { useTransitionRouter } from "@/components/page-transition";
 import { Post } from "@/interfaces/post";
 
 import { Giscus } from "./giscus";
@@ -28,7 +28,7 @@ export const PostDetail = ({
   nearbyPosts,
   currentSlug,
 }: PostDetailProps) => {
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   useEffect(() => {
     if (
