@@ -7,6 +7,7 @@ import {
   Home,
   Moon,
   Sun,
+  Undo2,
   UserRoundSearch,
 } from "lucide-react";
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "motion/react";
@@ -204,19 +205,19 @@ export function MobileBottomTab() {
       const clampedIndex = Math.max(0, Math.min(tabs.length - 1, nearestIndex));
       indicatorX.set(clampedIndex * TAB_STEP);
 
-      if (clampedIndex !== activeIndex) {
+      if (tabs[clampedIndex].href !== pathname) {
         navigateTo(tabs[clampedIndex].href);
       }
     } else if (touchedTabIndex.current !== null) {
-      // Tap on a tab — navigate
+      // Tap on a tab — navigate (even if same tab, pathname might differ)
       const i = touchedTabIndex.current;
-      if (i !== activeIndex) {
+      if (tabs[i].href !== pathname) {
         navigateTo(tabs[i].href);
       }
     }
 
     touchedTabIndex.current = null;
-  }, [activeIndex, indicatorX, indicatorScale]);
+  }, [pathname, indicatorX, indicatorScale]);
 
   return (
     <AnimatePresence>
@@ -295,7 +296,8 @@ export function MobileBottomTab() {
           {/* Tab items — plain divs, no Link */}
           <div className="relative z-10 flex" style={{ gap: TAB_GAP }}>
             {tabs.map((tab, i) => {
-              const Icon = tab.icon;
+              const isPostPage = pathname.startsWith("/post");
+              const Icon = (isPostPage && tab.href === "/") ? Undo2 : tab.icon;
               const isActive = i === activeIndex;
               return (
                 <div
@@ -305,7 +307,17 @@ export function MobileBottomTab() {
                   style={{ width: TAB_WIDTH, height: 48, WebkitTouchCallout: "none" }}
                 >
                   <motion.div style={{ scale: tabScales[i], opacity: tabOpacities[i] }}>
-                    <Icon className="size-[22px]" strokeWidth={isActive ? 2.2 : 1.8} />
+                    <AnimatePresence mode="wait" initial={false}>
+                      <motion.div
+                        key={Icon.displayName || Icon.name}
+                        initial={{ scale: 0.7, opacity: 0, rotate: -20 }}
+                        animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                        exit={{ scale: 0.7, opacity: 0, rotate: 20 }}
+                        transition={{ duration: 0.2, ease: "easeInOut" }}
+                      >
+                        <Icon className="size-[22px]" strokeWidth={isActive ? 2.2 : 1.8} />
+                      </motion.div>
+                    </AnimatePresence>
                   </motion.div>
                 </div>
               );
