@@ -143,8 +143,24 @@ export function SearchPageClient() {
 
   return (
     <div>
-      <h1 className="mb-4 text-3xl font-bold">검색</h1>
-      <div className="mb-6">
+      <motion.h1
+        className="mb-4 text-3xl font-bold"
+        initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+      >
+        검색
+      </motion.h1>
+      <motion.div
+        className="mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.7,
+          delay: 0.15,
+          ease: [0.25, 0.1, 0.25, 1],
+        }}
+      >
         <label htmlFor="search-input" className="sr-only">
           검색어
         </label>
@@ -157,7 +173,7 @@ export function SearchPageClient() {
             className="placeholder:text-muted-foreground w-full border-none bg-transparent text-sm outline-none"
           />
         </div>
-      </div>
+      </motion.div>
 
       <output
         className="mb-4 block text-sm text-neutral-500 dark:text-neutral-400"

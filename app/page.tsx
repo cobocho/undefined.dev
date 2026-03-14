@@ -4,6 +4,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { getAllPosts } from "@/apis/post";
+import {
+  AnimatedCategorySection,
+  AnimatedHeroTitle,
+  AnimatedHome,
+  AnimatedSection,
+} from "@/components/home/animated-home";
 import { PostCard } from "@/components/post/post-card";
 import { PostItem } from "@/components/post/post-item";
 import { ScrollablePostList } from "@/components/post/scrollable-post-list";
@@ -32,9 +38,11 @@ export default async function Home() {
   );
 
   return (
-    <div className="py-10">
-      <h1 className="mb-6 text-3xl font-bold">홈</h1>
-      <div className="mb-12">
+    <AnimatedHome>
+      <AnimatedHeroTitle>
+        <h1 className="mb-6 text-3xl font-bold">홈</h1>
+      </AnimatedHeroTitle>
+      <AnimatedSection delay={0.15} className="mb-12">
         <h2 className="mb-4 text-xl font-bold">최근 게시물</h2>
         <ScrollablePostList>
           {recentPosts.map((post) => (
@@ -43,9 +51,9 @@ export default async function Home() {
             </Link>
           ))}
         </ScrollablePostList>
-      </div>
-      {orderedByRecent.map(({ category, posts }) => (
-        <div key={category} className="mb-10">
+      </AnimatedSection>
+      {orderedByRecent.map(({ category, posts }, index) => (
+        <AnimatedCategorySection key={category} index={index}>
           <Link
             href={`/category/${category}`}
             className="transition-all duration-300 hover:scale-105"
@@ -65,8 +73,8 @@ export default async function Home() {
               </Link>
             ))}
           </ScrollablePostList>
-        </div>
+        </AnimatedCategorySection>
       ))}
-    </div>
+    </AnimatedHome>
   );
 }

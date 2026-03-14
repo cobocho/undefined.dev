@@ -3,28 +3,48 @@
 import { FileUser, Github, Mail } from "lucide-react";
 import { motion } from "motion/react";
 
+const ease = [0.25, 0.1, 0.25, 1] as const;
+
 export function AboutPageClient() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="py-10"
-    >
-      <h1 className="mb-20 text-3xl font-bold">소개</h1>
-      <div className="mb-4 flex items-end gap-2">
+    <div className="py-10">
+      <motion.h1
+        className="mb-20 text-3xl font-bold"
+        initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: 0.8, ease }}
+      >
+        소개
+      </motion.h1>
+      <motion.div
+        className="mb-4 flex items-end gap-2"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.15, ease }}
+      >
         <span className="text-4xl font-bold">김민규</span>
         <span className="text-xl text-neutral-500 dark:text-neutral-300">
           Frontend Developer
         </span>
-      </div>
-      <div className="mb-4">
+      </motion.div>
+      <motion.div
+        className="mb-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3, ease }}
+      >
         <span>
           프론트엔드 개발자 김민규입니다
           <br />
           맥주와 리버풀을 좋아합니다.
         </span>
-      </div>
-      <div className="flex gap-2">
+      </motion.div>
+      <motion.div
+        className="flex gap-2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.45, ease }}
+      >
         <a
           href="https://resume.un-defined.dev"
           target="_blank"
@@ -56,7 +76,7 @@ export function AboutPageClient() {
             Mail
           </button>
         </a>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }

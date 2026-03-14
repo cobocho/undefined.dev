@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { getCategories } from "@/apis/category";
 import { getPostsByCategory } from "@/apis/post";
+import { FadeInUp } from "@/components/animation/fade-in-up";
 import { SITE_NAME } from "@/constants/site-metadata";
 
 import { CategoryPostItem } from "./_components/category-post-item";
@@ -67,17 +68,19 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <div className="py-8 sm:py-10">
-      <div className="mb-4 flex items-center gap-3 sm:mb-2 sm:gap-4">
-        <Link href="/">
-          <ChevronLeft className="size-7 text-neutral-500 sm:size-8" />
-        </Link>
-        <div>
-          <h1 className="text-2xl font-bold capitalize sm:text-3xl">{slug}</h1>
-          <p className="text-muted-foreground text-sm">
-            {posts.length}개의 게시물
-          </p>
+      <FadeInUp>
+        <div className="mb-4 flex items-center gap-3 sm:mb-2 sm:gap-4">
+          <Link href="/">
+            <ChevronLeft className="size-7 text-neutral-500 sm:size-8" />
+          </Link>
+          <div>
+            <h1 className="text-2xl font-bold capitalize sm:text-3xl">{slug}</h1>
+            <p className="text-muted-foreground text-sm">
+              {posts.length}개의 게시물
+            </p>
+          </div>
         </div>
-      </div>
+      </FadeInUp>
       <div className="flex flex-col gap-3 sm:gap-4">
         {posts.map((post, index) => (
           <Link
@@ -85,7 +88,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             key={post.slug}
             className="block"
           >
-            <CategoryPostItem post={post} delay={index * 0.07} />
+            <CategoryPostItem post={post} delay={0.1 + index * 0.07} />
           </Link>
         ))}
       </div>
