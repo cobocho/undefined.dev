@@ -1,29 +1,15 @@
-"use client";
-
 import dayjs from "dayjs";
-import { motion } from "motion/react";
 import Image from "next/image";
 
 import { Post } from "@/interfaces/post";
 
 export function CategoryPostItem({
   post,
-  delay,
 }: {
   post: Omit<Post, "content">;
-  delay: number;
 }) {
   return (
-    <motion.div
-      className="group flex cursor-pointer flex-col gap-3 rounded-xl p-3 transition-all duration-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 sm:flex-row sm:gap-5"
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        delay,
-        duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1],
-      }}
-    >
+    <div className="group flex cursor-pointer flex-col gap-3 rounded-xl p-3 transition-all duration-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 sm:flex-row sm:gap-5">
       <div className="relative h-44 w-full overflow-hidden rounded-lg sm:h-[100px] sm:w-[160px] sm:min-w-[160px]">
         <Image
           src={post.thumbnail}
@@ -53,6 +39,6 @@ export function CategoryPostItem({
           </span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

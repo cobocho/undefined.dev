@@ -11,12 +11,14 @@ interface FadeInUpProps {
 export const FadeInUp = ({ children, delay = 0, className }: FadeInUpProps) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 28 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 16, filter: "blur(4px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{
-        duration: 0.7,
+        type: "spring",
+        stiffness: 200,
+        damping: 22,
+        mass: 1,
         delay,
-        ease: [0.25, 0.1, 0.25, 1],
       }}
       className={className}
     >

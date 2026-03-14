@@ -13,7 +13,7 @@ export const StaggerChildren = ({
   children,
   className,
   baseDelay = 0,
-  staggerDelay = 0.12,
+  staggerDelay = 0.06,
 }: StaggerChildrenProps) => {
   return (
     <motion.div
@@ -45,13 +45,16 @@ export const StaggerItem = ({
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 24 },
+        hidden: { opacity: 0, y: 16, filter: "blur(4px)" },
         visible: {
           opacity: 1,
           y: 0,
+          filter: "blur(0px)",
           transition: {
-            duration: 0.6,
-            ease: [0.25, 0.1, 0.25, 1],
+            type: "spring",
+            stiffness: 200,
+            damping: 22,
+            mass: 1,
           },
         },
       }}

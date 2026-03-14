@@ -6,6 +6,10 @@ import { notFound } from "next/navigation";
 import { getCategories } from "@/apis/category";
 import { getPostsByCategory } from "@/apis/post";
 import { FadeInUp } from "@/components/animation/fade-in-up";
+import {
+  StaggerChildren,
+  StaggerItem,
+} from "@/components/animation/stagger-children";
 import { SITE_NAME } from "@/constants/site-metadata";
 
 import { CategoryPostItem } from "./_components/category-post-item";
@@ -68,7 +72,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <div className="py-8 sm:py-10">
-      <FadeInUp>
+      <FadeInUp delay={0.1}>
         <div className="mb-4 flex items-center gap-3 sm:mb-2 sm:gap-4">
           <Link href="/">
             <ChevronLeft className="size-7 text-neutral-500 sm:size-8" />
@@ -81,17 +85,22 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </div>
         </div>
       </FadeInUp>
-      <div className="flex flex-col gap-3 sm:gap-4">
-        {posts.map((post, index) => (
-          <Link
-            href={`/post/${post.category}/${post.slug}`}
-            key={post.slug}
-            className="block"
-          >
-            <CategoryPostItem post={post} delay={0.1 + index * 0.07} />
-          </Link>
+      <StaggerChildren
+        className="flex flex-col gap-3 sm:gap-4"
+        baseDelay={0.2}
+        staggerDelay={0.06}
+      >
+        {posts.map((post) => (
+          <StaggerItem key={post.slug}>
+            <Link
+              href={`/post/${post.category}/${post.slug}`}
+              className="block"
+            >
+              <CategoryPostItem post={post} />
+            </Link>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerChildren>
     </div>
   );
 }
