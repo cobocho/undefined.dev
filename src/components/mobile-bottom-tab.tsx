@@ -54,6 +54,12 @@ export function MobileBottomTab() {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
 
+  // Track previous pathname for back navigation
+  const prevPathname = useRef<string | null>(null);
+  useEffect(() => {
+    return () => { prevPathname.current = pathname; };
+  }, [pathname]);
+
   // --- Scroll hide logic ---
   const enableHideByScroll = useMemo(() => {
     return hideOnRoutes.some((m) => matchRoute(pathname, m));
@@ -209,9 +215,17 @@ export function MobileBottomTab() {
         navigateTo(tabs[clampedIndex].href);
       }
     } else if (touchedTabIndex.current !== null) {
-      // Tap on a tab — navigate (even if same tab, pathname might differ)
       const i = touchedTabIndex.current;
-      if (tabs[i].href !== pathname) {
+      const isPostPage = pathname.startsWith("/post");
+
+      if (isPostPage && tabs[i].href === "/") {
+        // On post page, Undo2 button: go back if previous page was internal, else home
+        if (prevPathname.current && !prevPathname.current.startsWith("/post")) {
+          document.dispatchEvent(new Event("transition-back"));
+        } else {
+          navigateTo("/");
+        }
+      } else if (tabs[i].href !== pathname) {
         navigateTo(tabs[i].href);
       }
     }

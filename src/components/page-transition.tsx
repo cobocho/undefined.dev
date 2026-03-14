@@ -125,6 +125,13 @@ export function PageTransition({ children }: { children: ReactNode }) {
     router.back();
   }, [router, animateOut]);
 
+  // Listen for custom "transition-back" event from outside PageTransition
+  useEffect(() => {
+    const handler = () => { transitionBack(); };
+    document.addEventListener("transition-back", handler);
+    return () => document.removeEventListener("transition-back", handler);
+  }, [transitionBack]);
+
   return (
     <TransitionRouterContext
       value={{ push: transitionPush, back: transitionBack }}
