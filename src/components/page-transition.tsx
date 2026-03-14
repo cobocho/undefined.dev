@@ -10,8 +10,8 @@ import {
   useRef,
 } from "react";
 
-const EXIT_MS = 400;
-const ENTER_MS = 500;
+const EXIT_MS = 250;
+const ENTER_MS = 300;
 const EASE_OUT = "cubic-bezier(0.16, 1, 0.3, 1)";
 const EASE_IN = "cubic-bezier(0.4, 0, 0.6, 1)";
 
@@ -65,6 +65,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
         el.style.transition = `opacity ${ENTER_MS}ms ${EASE_OUT}, transform ${ENTER_MS}ms ${EASE_OUT}`;
         el.style.opacity = "1";
         el.style.transform = "translateY(0)";
+        isAnimating.current = false;
       });
     });
   }, [pathname]);
@@ -98,9 +99,8 @@ export function PageTransition({ children }: { children: ReactNode }) {
       e.stopPropagation();
 
       isAnimating.current = true;
-      await animateOut();
+      animateOut();
       router.push(href);
-      isAnimating.current = false;
     };
 
     document.addEventListener("click", handleClick, true);
@@ -109,22 +109,20 @@ export function PageTransition({ children }: { children: ReactNode }) {
 
   // --- Transition Router ---
   const transitionPush = useCallback(
-    async (href: string) => {
+    (href: string) => {
       if (isAnimating.current) return;
       isAnimating.current = true;
-      await animateOut();
+      animateOut();
       router.push(href);
-      isAnimating.current = false;
     },
     [router, animateOut],
   );
 
-  const transitionBack = useCallback(async () => {
+  const transitionBack = useCallback(() => {
     if (isAnimating.current) return;
     isAnimating.current = true;
-    await animateOut();
+    animateOut();
     router.back();
-    isAnimating.current = false;
   }, [router, animateOut]);
 
   return (

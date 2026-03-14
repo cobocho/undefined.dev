@@ -27,7 +27,25 @@ export const MarkdownRenderer = ({
 }: MarkdownRendererProps) => {
   const components: Partial<Components> = useMemo(
     () => ({
-      p: (props) => <p {...props} className="my-4 leading-[190%]" />,
+      p: ({ children, node, ...rest }) => {
+        const hasBlock = node?.children?.some(
+          (child) =>
+            child.type === "element" &&
+            (child.tagName === "img" || child.tagName === "figure"),
+        );
+        if (hasBlock) {
+          return (
+            <div {...rest} className="my-4 leading-[190%]">
+              {children}
+            </div>
+          );
+        }
+        return (
+          <p {...rest} className="my-4 leading-[190%]">
+            {children}
+          </p>
+        );
+      },
       h1: (props) => (
         <h1
           {...props}
