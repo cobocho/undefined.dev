@@ -201,6 +201,10 @@ export function MobileBottomTab() {
               inset -8px -8px 16px rgba(229,253,190,0.06),
               inset -2px -2px 4px rgba(247,255,226,0.1)
             `,
+            WebkitUserSelect: "none",
+            userSelect: "none",
+            WebkitTouchCallout: "none",
+            touchAction: "pan-y",
           }}
           ref={containerRef}
           onTouchStart={handleTouchStart}
@@ -259,8 +263,12 @@ export function MobileBottomTab() {
                 <Link
                   key={tab.href}
                   href={tab.href}
-                  className="flex items-center justify-center rounded-[22px] text-neutral-900 dark:text-white"
-                  style={{ width: TAB_WIDTH, height: 48 }}
+                  className="flex items-center justify-center rounded-[22px] text-neutral-900 select-none dark:text-white"
+                  draggable={false}
+                  style={{ width: TAB_WIDTH, height: 48, WebkitTouchCallout: "none" }}
+                  onTouchStart={() => {
+                    indicatorX.set(i * TAB_STEP);
+                  }}
                   onClick={(e) => {
                     if (isDragging.current) {
                       e.preventDefault();
