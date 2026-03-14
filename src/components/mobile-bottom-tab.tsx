@@ -130,7 +130,7 @@ export function MobileBottomTab() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     return useTransform(springX, (x) => {
       const dist = Math.abs(x - i * TAB_STEP);
-      return 0.4 + 0.6 * Math.max(0, 1 - dist / TAB_STEP);
+      return 0.55 + 0.45 * Math.max(0, 1 - dist / TAB_STEP);
     });
   });
 
@@ -316,7 +316,7 @@ export function MobileBottomTab() {
         {/* Theme toggle */}
         <button
           onClick={toggleTheme}
-          className="ml-1.5 flex items-center justify-center overflow-hidden rounded-[28px] border border-white/50 bg-white/60 text-neutral-500 backdrop-blur-xl dark:border-white/12 dark:bg-white/10 dark:text-neutral-400"
+          className="ml-1.5 flex items-center justify-center overflow-hidden rounded-[28px] border border-white/50 bg-white/60 text-neutral-500 backdrop-blur-xl dark:border-white/12 dark:bg-white/10 dark:text-neutral-200"
           style={{
             width: 62,
             height: 60,
