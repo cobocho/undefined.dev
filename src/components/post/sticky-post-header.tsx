@@ -3,11 +3,14 @@
 import { ChevronLeft } from "lucide-react";
 import { motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface StickyPostHeaderProps {
   title: string;
   onBack: () => void;
 }
+
+const MOBILE_BREAKPOINT = 768;
 
 export function StickyPostHeader({ title, onBack }: StickyPostHeaderProps) {
   const [visible, setVisible] = useState(false);
@@ -16,6 +19,9 @@ export function StickyPostHeader({ title, onBack }: StickyPostHeaderProps) {
     null,
   );
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const pastSentinel = useRef(false);
+  const scrollingUp = useRef(false);
+  const lastScrollY = useRef(0);
 
   const getScrollWrapper = useCallback(() => {
     return document.getElementById("content-wrapper");
@@ -83,19 +89,44 @@ export function StickyPostHeader({ title, onBack }: StickyPostHeaderProps) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const isVisible = !entry.isIntersecting;
-        setVisible(isVisible);
-        if (isVisible) updateRect();
+        pastSentinel.current = !entry.isIntersecting;
+        updateVisibility();
+        if (pastSentinel.current) updateRect();
       },
-      { root: null, threshold: 0 },
+      { root: wrapper ?? null, threshold: 0 },
     );
 
     observer.observe(sentinel);
 
+    const isMobile = () => window.innerWidth < MOBILE_BREAKPOINT;
+
+    const updateVisibility = () => {
+      if (!pastSentinel.current) {
+        setVisible(false);
+        return;
+      }
+      // 데스크탑: sentinel 지나면 항상 표시, 모바일: 아래로 스크롤할 때만
+      setVisible(isMobile() ? !scrollingUp.current : true);
+    };
+
+    const onScroll = () => {
+      const scrollEl = wrapper ?? document.documentElement;
+      const currentY = wrapper ? wrapper.scrollTop : window.scrollY;
+      const delta = currentY - lastScrollY.current;
+
+      if (Math.abs(delta) > 4) {
+        scrollingUp.current = delta < 0;
+        if (isMobile()) updateVisibility();
+      }
+
+      lastScrollY.current = currentY;
+      updateProgress();
+    };
+
     window.addEventListener("resize", updateRect);
     window.addEventListener("resize", updateProgress);
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    wrapper?.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    wrapper?.addEventListener("scroll", onScroll, { passive: true });
     const rafId = window.requestAnimationFrame(updateProgress);
 
     return () => {
@@ -103,44 +134,54 @@ export function StickyPostHeader({ title, onBack }: StickyPostHeaderProps) {
       window.cancelAnimationFrame(rafId);
       window.removeEventListener("resize", updateRect);
       window.removeEventListener("resize", updateProgress);
-      window.removeEventListener("scroll", updateProgress);
-      wrapper?.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("scroll", onScroll);
+      wrapper?.removeEventListener("scroll", onScroll);
     };
   }, [getScrollWrapper, updateProgress, updateRect]);
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  const header = (
+    <div
+      className={`pointer-events-none fixed top-4 z-40 transition duration-300 ${
+        visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+      }`}
+      style={
+        rect
+          ? { left: rect.left, width: rect.width }
+          : { left: 0, width: "100%" }
+      }
+    >
+      <div className="pointer-events-auto relative w-full max-w-full overflow-hidden rounded-[24px] border border-neutral-200 bg-neutral-50/80 px-4 pt-3 pb-4 backdrop-blur-md dark:border-neutral-700 dark:bg-neutral-900/80">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              setVisible(false);
+              setTimeout(onBack, 300);
+            }}
+            className="flex shrink-0 cursor-pointer items-center text-neutral-500 transition-colors hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200"
+          >
+            <ChevronLeft className="size-4" />
+          </button>
+          <span className="truncate text-lg font-semibold">{title}</span>
+        </div>
+        <div className="absolute right-0 bottom-0 left-0 h-1">
+          <motion.div
+            className="h-full bg-blue-500"
+            animate={{ width: `${progress * 100}%` }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          />
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <>
       <div ref={sentinelRef} className="pointer-events-none h-0" />
-      <div
-        className={`pointer-events-none fixed top-4 z-40 transition duration-300 ${
-          visible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-        }`}
-        style={
-          rect
-            ? { left: rect.left, width: rect.width }
-            : { left: 0, width: "100%" }
-        }
-      >
-        <div className="pointer-events-auto relative w-full max-w-full overflow-hidden rounded-[24px] border border-neutral-200 bg-neutral-50/80 px-4 pt-3 pb-4 backdrop-blur-md dark:border-neutral-700 dark:bg-neutral-900/80">
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={onBack}
-              className="flex shrink-0 cursor-pointer items-center text-neutral-500 transition-colors hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200"
-            >
-              <ChevronLeft className="size-4" />
-            </button>
-            <span className="truncate text-lg font-semibold">{title}</span>
-          </div>
-          <div className="absolute right-0 bottom-0 left-0 h-1">
-            <motion.div
-              className="h-full bg-blue-500"
-              animate={{ width: `${progress * 100}%` }}
-              transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            />
-          </div>
-        </div>
-      </div>
+      {mounted && createPortal(header, document.body)}
     </>
   );
 }
