@@ -29,6 +29,7 @@ export function CategoryPostItem({
           src={post.thumbnail}
           alt={post.title}
           fill
+          sizes="(max-width: 640px) 100vw, 160px"
           blurDataURL={post.thumbnail.blurDataURL}
           className="object-cover"
           placeholder="blur"

@@ -160,6 +160,7 @@ export const PostDetail = ({
                 src={post.thumbnail}
                 alt={post.title}
                 fill
+                sizes="(max-width: 1200px) 100vw, 1200px"
                 blurDataURL={post.thumbnail.blurDataURL}
                 className="object-cover"
                 placeholder="blur"

@@ -15,6 +15,7 @@ export const PostItem = ({ post }: PostItemProps) => {
           src={post.thumbnail}
           alt={post.title}
           fill
+          sizes="280px"
           blurDataURL={post.thumbnail.blurDataURL}
           className="pointer-events-none object-cover select-none"
           draggable={false}
